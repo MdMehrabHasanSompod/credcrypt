@@ -45,11 +45,11 @@ const Register = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 py-8">
+        <div className="min-h-screen bg-green-700 flex items-center justify-center px-4 sm:px-6 py-8">
             <div className="w-full max-w-md sm:max-w-lg md:max-w-xl bg-white rounded-xl shadow-lg p-6 sm:p-8">
                 <Link
                     href="/"
-                    className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600 mb-4 sm:mb-6"
+                    className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-green-600 mb-4 sm:mb-6"
                 >
                     <ArrowLeft size={18} />
                     Back to Home
@@ -153,7 +153,7 @@ const Register = () => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-blue-600 cursor-pointer hover:bg-blue-700 flex items-center justify-center gap-3 text-white font-medium py-3 px-4 rounded-lg transition text-sm sm:text-base"
+                        className="w-full bg-green-600 cursor-pointer hover:bg-green-700 flex items-center justify-center gap-3 text-white font-medium py-3 px-4 rounded-lg transition text-sm sm:text-base"
                     >
                         {loading && <Loader2 size={20} className="animate-spin" />}
                         Create Account
@@ -181,7 +181,7 @@ const Register = () => {
                     Already have an account?{" "}
                     <button
                         onClick={() => router.push("/login")}
-                        className="text-blue-600 cursor-pointer font-medium hover:underline focus:outline-none"
+                        className="text-green-600 cursor-pointer font-medium hover:underline focus:outline-none"
                     >
                         Login
                     </button>

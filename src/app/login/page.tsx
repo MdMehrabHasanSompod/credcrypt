@@ -41,18 +41,18 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 py-8">
+        <div className="min-h-screen bg-green-700 flex items-center justify-center px-4 sm:px-6 py-8">
             <div className="w-full max-w-md sm:max-w-lg md:max-w-xl bg-white rounded-xl shadow-lg p-6 sm:p-8">
                 <Link
                     href="/"
-                    className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600 mb-4 sm:mb-6"
+                    className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-green-600 mb-4 sm:mb-6"
                 >
                     <ArrowLeft size={18} />
                     Back to Home
                 </Link>
 
                 <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 text-center mb-6">
-                    Login to CredCrypt
+                    Login to <span className='text-green-600'>CredCrypt</span>
                 </h1>
 
                 <form className="space-y-4" onSubmit={submitHandler}>
@@ -114,7 +114,7 @@ const Login = () => {
                         <button
                             type="button"
                             onClick={() => router.push("/forgot-password")}
-                            className="text-sm cursor-pointer text-blue-600 hover:text-blue-700 hover:underline"
+                            className="text-sm cursor-pointer text-red-700 hover:text-red-800 hover:underline"
                         >
                             Forgot password?
                         </button>
@@ -123,7 +123,7 @@ const Login = () => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed flex items-center justify-center gap-3 text-white font-medium py-3 px-4 rounded-lg transition text-sm sm:text-base"
+                        className="w-full cursor-pointer bg-green-600 hover:bg-green-700 disabled:bg-green-400 disabled:cursor-not-allowed flex items-center justify-center gap-3 text-white font-medium py-3 px-4 rounded-lg transition text-sm sm:text-base"
                     >
                         {loading && <Loader2 size={20} className="animate-spin" />}
                         Login
@@ -151,7 +151,7 @@ const Login = () => {
                     Don&apos;t have an account?{" "}
                     <button
                         onClick={() => router.push("/register")}
-                        className="text-blue-600 cursor-pointer font-medium hover:underline focus:outline-none"
+                        className="text-green-600 cursor-pointer font-medium hover:underline focus:outline-none"
                     >
                         Register
                     </button>
