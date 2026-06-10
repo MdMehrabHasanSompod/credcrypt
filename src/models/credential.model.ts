@@ -10,7 +10,6 @@ const credentialSchema = new mongoose.Schema<ICredential>({
     name: {
         type: String,
         required: true,
-        unique: true,
         minlength: [2, 'Name must be at least 2 characters'],
         maxlength: [40, 'Name cannot exceed 40 characters'],
         trim: true,
@@ -18,22 +17,30 @@ const credentialSchema = new mongoose.Schema<ICredential>({
     email: {
         type: String,
         required: true,
-        unique: true,
         trim: true,
-        match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please enter a valid email",]
+        match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please enter a valid email",],
     },
     type: {
         type: String,
-        enum: ["password", "pin", "secuirty-code", "recovery-code", "otp", "session-token", "api-key", "others"],
+        enum: ["password", "pin", "security-code", "recovery-code", "otp", "session-token", "api-key", "others"],
         required: true
     },
     value: {
-        type: String,
+        type: {
+            iv: String,
+            data: String,
+            tag: String,
+        },
         required: true,
     }
 
 }, {
     timestamps: true
 })
+
+credentialSchema.index(
+    { userId: 1, name: 1, email: 1, type: 1 },
+    { unique: true }
+);
 
 export const Credential = mongoose.models.Credential || mongoose.model<ICredential>("Credential", credentialSchema)

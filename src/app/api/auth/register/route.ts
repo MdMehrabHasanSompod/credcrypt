@@ -5,7 +5,7 @@ import { User } from "@/models/user.model";
 
 export const POST = async (request: NextRequest) => {
     try {
-        const { name, email, phone, password, age, gender } = await request.json()
+        const { name, email, phone, password } = await request.json()
         if (!name || !email || !phone || !password) {
             return NextResponse.json(
                 { success: false, message: "All fields are required" },
