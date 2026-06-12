@@ -22,7 +22,7 @@ const credentialSchema = new mongoose.Schema<ICredential>({
     },
     type: {
         type: String,
-        enum: ["password", "pin", "security-code", "recovery-code", "otp", "session-token", "api-key", "others"],
+        enum: ["password", "pin", "security-code", "security-question", "recovery-code", "otp", "session-token", "api-key", "others"],
         required: true
     },
     value: {

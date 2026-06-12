@@ -193,7 +193,7 @@ const UserSettings = ({ setOpenMobileSidebar }: propType) => {
                                     month: "short",
                                     year: "numeric",
                                 }) : ""}</p>
-                                <button onClick={() => setUpdateProfile(true)} className='bg-green-200 hover:bg-green-800 rounded-lg text-green-800 hover:text-white text-center px-4 py-3 mt-2 cursor-pointer text-md font-semibold'>Update Profile</button>
+                                <button onClick={() => setUpdateProfile(true)} className='bg-green-800 hover:bg-green-900 rounded-lg text-white text-center px-4 py-3 mt-2 cursor-pointer text-md font-semibold'>Update Profile</button>
                             </div>
                         </>
                         )}

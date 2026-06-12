@@ -3,3 +3,16 @@
 .form-input {
     @apply w-full px-4 py-3 pr-12 rounded-lg border border-gray-300 focus:border-2 focus:border-green-500 outline-none transition text-sm sm:text-base
 }
+
+
+.form-select {
+    @apply w-full px-4 py-3 pr-12 rounded-lg border border-gray-300 focus:border-2 focus:border-green-500 outline-none transition text-sm sm:text-base cursor-pointer bg-white
+}
+
+.select-option {
+    @apply text-sm text-gray-800 py-2 px-3
+}
+
+.select-option:checked {
+    @apply text-white bg-green-600
+}

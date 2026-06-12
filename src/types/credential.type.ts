@@ -12,7 +12,7 @@ export interface ICredential {
     userId: mongoose.Schema.Types.ObjectId;
     name: string;
     email: string;
-    type: "password" | "pin" | "security-code" | "recovery-code" | "otp" | "session-token" | "api-key" | "others";
+    type: "password" | "pin" | "security-code" | "security-question" | "recovery-code" | "otp" | "session-token" | "api-key" | "others";
     value: IEncryptedValue;
     createdAt: Date;
     updatedAt: Date;
