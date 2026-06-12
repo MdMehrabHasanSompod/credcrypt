@@ -2,16 +2,24 @@ import connectDB from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import { Credential } from "@/models/credential.model";
 import { auth } from "@/lib/auth";
+import mongoose from "mongoose";
 
-export const POST = async (request: NextRequest) => {
+export const DELETE = async (request: NextRequest, { params }: { params: { credentialId: string } }) => {
     try {
-        const { name, email, type } = await request.json()
+        const credentialId = params.credentialId
 
-        if (!name || !type) {
+        if (!credentialId?.trim()) {
             return NextResponse.json(
-                { success: false, message: "Missing required fields" },
+                { success: false, message: "Invalid request" },
                 { status: 400 }
             )
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(credentialId)) {
+            return NextResponse.json(
+                { success: false, message: "Invalid credential id" },
+                { status: 400 }
+            );
         }
 
 
@@ -26,31 +34,23 @@ export const POST = async (request: NextRequest) => {
 
         const sessionUserId = session.user.id;
 
+
         await connectDB();
 
-        await Credential.deleteOne({
-            userId: sessionUserId,
-            name,
-            email,
-            type
+        const deletedCredential = await Credential.findOneAndDelete({ _id: credentialId, userId: sessionUserId })
 
-        })
-
-        return NextResponse.json({
-            success: true, message: "Credential removed successfully"
-        }, { status: 201 })
-
-    } catch (error: any) {
-        if (error.code === 11000) {
+        if (!deletedCredential) {
             return NextResponse.json(
-                {
-                    success: false,
-                    message: "Credential doesn't exists",
-                },
-                { status: 409 }
+                { success: false, message: "Credential not found" },
+                { status: 404 }
             );
         }
 
+        return NextResponse.json({
+            success: true, message: "Credential deleted successfully"
+        }, { status: 200 })
+
+    } catch (error: any) {
         return NextResponse.json(
             { success: false, message: "Internal server error" },
             { status: 500 }
