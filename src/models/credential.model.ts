@@ -11,7 +11,7 @@ const credentialSchema = new mongoose.Schema<ICredential>({
         type: String,
         required: true,
         minlength: [2, 'Name must be at least 2 characters'],
-        maxlength: [40, 'Name cannot exceed 40 characters'],
+        maxlength: [100, 'Name cannot exceed 100 characters'],
         trim: true,
     },
     email: {
