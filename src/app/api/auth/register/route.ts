@@ -2,6 +2,9 @@ import connectDB from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt"
 import { User } from "@/models/user.model";
+import { generateMasterKey, hashMasterKey } from "@/lib/crypto";
+import crypto from "crypto"
+import { redis } from "@/lib/redis";
 
 export const POST = async (request: NextRequest) => {
     try {
@@ -26,14 +29,32 @@ export const POST = async (request: NextRequest) => {
                 { status: 409 }
             )
         }
-        const hashedPassword = await bcrypt.hash(password, 10)
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = await User.create({
+        const masterKey = generateMasterKey();
+
+        const masterKeySalt = crypto.randomBytes(16).toString("hex");
+
+        const masterKeyHash = hashMasterKey(masterKey, masterKeySalt)
+
+
+
+        const createdUser = await User.create({
             name,
             email,
             phone,
             password: hashedPassword,
+            masterKeyHash,
+            masterKeySalt,
         })
+
+        await redis.set(`credcrypt-masterKey-${createdUser._id}`, masterKey, { ex: 300 })
+
+        const newUser: any = {
+            name: createdUser.name,
+            email: createdUser.email,
+            phone: createdUser.phone
+        }
 
 
         return NextResponse.json({

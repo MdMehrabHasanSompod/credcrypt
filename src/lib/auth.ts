@@ -4,6 +4,9 @@ import connectDB from "./db"
 import { User } from "../models/user.model"
 import bcrypt from "bcrypt"
 import Google from "next-auth/providers/google"
+import { generateMasterKey, hashMasterKey } from "./crypto"
+import crypto from "crypto"
+import { redis } from "./redis"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
@@ -44,11 +47,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 await connectDB()
                 let ExistedUser = await User.findOne({ email: user.email })
                 if (!ExistedUser) {
+                    const masterKey = generateMasterKey();
+                    const masterKeySalt = crypto.randomBytes(16).toString("hex");
+                    const masterKeyHash = hashMasterKey(masterKey, masterKeySalt)
                     ExistedUser = await User.create({
                         name: user.name,
                         email: user.email,
-                        avatar: user.image
+                        avatar: user.image,
+                        masterKeyHash,
+                        masterKeySalt,
                     })
+                    await redis.set(`credcrypt-masterKey-${ExistedUser._id}`, masterKey, { ex: 300 })
                 }
                 user.id = ExistedUser._id.toString();
             }

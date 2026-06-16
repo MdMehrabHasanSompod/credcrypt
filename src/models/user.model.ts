@@ -26,6 +26,18 @@ const userSchema = new mongoose.Schema<IUser>({
         match: [/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])(?=\S+$).{8,200}$/, "Password validation failed"],
         select: false,
     },
+    masterKeyHash: {
+        type: String,
+        select: false,
+    },
+    masterKeySalt: {
+        type: String,
+        select: false,
+    },
+    hasSetUpMasterKey: {
+        type: Boolean,
+        default: false,
+    },
     avatar: {
         type: String
     },

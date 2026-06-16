@@ -43,3 +43,26 @@ export function decrypt(payload: {
 
     return decrypted.toString("utf8");
 }
+
+
+
+export function generateMasterKey(): string {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    let masterKey = "";
+
+    for (let i = 0; i < 16; i++) {
+        const randomIndex = crypto.randomInt(0, chars.length);
+        masterKey += chars[randomIndex];
+    }
+
+    return masterKey;
+}
+
+export function hashMasterKey(masterKey: string, salt: string) {
+    return crypto
+        .createHmac("sha256", salt)
+        .update(masterKey)
+        .digest("hex");
+}
+

@@ -27,7 +27,7 @@ const Login = () => {
             })
             console.log(result);
             if (result?.ok) {
-                router.push("/user/dashboard");
+                router.push("/api/auth/post-login");
             }
             setEmail("");
             setPassword("");
@@ -138,7 +138,7 @@ const Login = () => {
 
                 <button
                     type="button"
-                    onClick={() => signIn("google", { callbackUrl: "/user/dashboard" })}
+                    onClick={() => signIn("google", { callbackUrl: "/api/auth/post-login" })}
                     className="w-full cursor-pointer flex items-center justify-center gap-4 border border-gray-300 py-3 px-4 rounded-lg hover:bg-gray-50 transition"
                 >
                     <Image src={assets.GoogleImage} alt="Google" width={22} height={22} />

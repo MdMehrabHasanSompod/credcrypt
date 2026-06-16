@@ -12,7 +12,7 @@ export default async function proxy(request: NextRequest) {
     const publicRoutes = ["/about", "/help", "/services"];
     const authenticationRoutes = ["/login", "/register"];
     const allowedFrontendRoutes: string[] = ["/user",];
-    const allowedApiRoutes: string[] = ["/api/user"];
+    const allowedApiRoutes: string[] = ["/api/user",];
 
 
     if (publicRoutes.some((r) => pathname.startsWith(r))) {

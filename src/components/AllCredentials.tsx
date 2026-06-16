@@ -11,8 +11,9 @@ import {
 import ResponsiveSearch from "./ResponsiveSearch";
 import { useCredentialStore } from "@/stores/credentials.store";
 import axios from "axios";
-import { useSession } from "next-auth/react";
 import { IDecryptedCredential } from "@/types/credential.type";
+import OpenMasterModal from "./OpenMasterModal";
+import UnlockedCredential from "./UnlockedCredential";
 
 type propType = { setOpenMobileSidebar: React.Dispatch<React.SetStateAction<boolean>> };
 
@@ -29,8 +30,6 @@ const typeStyles: Record<string, string> = {
 };
 
 const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
-    const session = useSession()
-    const userId = session.data?.user.id
     const credentials = useCredentialStore((state) => state.credentials);
     const [searchTerm, setSearchTerm] = useState("");
     const [loadingId, setLoadingId] = useState<string | null>(null);
@@ -64,7 +63,6 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
             const result = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/reveal-credential`,
                 {
                     masterKey,
-                    userId,
                     selectedCredId
                 }
             );
@@ -449,8 +447,26 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
                     )
                 )}
             </div>
+            {openMasterModal && (
+                <OpenMasterModal
+                    masterKey={masterKey}
+                    setMasterKey={setMasterKey}
+                    setOpenMasterModal={setOpenMasterModal}
+                    revealCredential={revealCredential}
+                    verifying={verifying}
+                />
+            )}
+            {selectedCredential && (
+                <UnlockedCredential
+                    selectedCredential={selectedCredential}
+                    copyToClipboard={copyToClipboard}
+                />
+            )}
+
         </div>
     );
 };
 
 export default AllCredentials;
+
+
