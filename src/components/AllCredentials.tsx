@@ -429,17 +429,17 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
                                     <div className="flex items-center justify-between gap-3">
                                         <button
                                             onClick={() => handleViewClick(cred._id)}
-                                            className="flex items-center gap-1 px-3 py-2 rounded-lg bg-green-50 text-green-700 font-semibold"
+                                            className="flex text-xs items-center gap-1 px-3 py-2 rounded-lg bg-green-50 text-green-700 font-semibold"
                                         >
                                             <Eye size={16} />
                                             View
                                         </button>
-                                        <button className="flex items-center gap-1 px-3 py-2 rounded-lg bg-blue-50 text-blue-700 font-semibold">
+                                        <button className="flex text-xs items-center gap-1 px-3 py-2 rounded-lg bg-blue-50 text-blue-700 font-semibold">
                                             <FilePlusCorner size={16} /> Update
                                         </button>
                                     </div>
                                     <button className="flex items-center gap-1 px-3 py-2 rounded-lg bg-red-50 text-red-700 font-semibold">
-                                        <Trash2 size={16} /> Delete
+                                        <Trash2 size={16} />
                                     </button>
                                 </div>
                             </div>
