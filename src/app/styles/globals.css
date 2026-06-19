@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 .form-input {
-    @apply w-full px-4 py-3 pr-12 rounded-lg border border-gray-300 focus:border-2 focus:border-green-500 outline-none transition text-sm sm:text-base
+    @apply w-full px-4 py-3 pr-12 rounded-lg border-2 border-gray-300 focus:border-green-500 outline-none transition text-sm sm:text-base
 }
 
 
 .form-select {
-    @apply w-full px-4 py-3 pr-12 rounded-lg border border-gray-300 focus:border-2 focus:border-green-500 outline-none transition text-sm sm:text-base cursor-pointer bg-white
+    @apply w-full px-4 py-3 pr-12 rounded-lg border-2 border-gray-300 focus:border-green-500 outline-none transition text-sm sm:text-base cursor-pointer bg-white
 }
 
 .select-option {

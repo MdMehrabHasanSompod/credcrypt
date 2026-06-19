@@ -21,14 +21,14 @@ const OpenMasterModal = ({ masterKey, setMasterKey, setOpenMasterModal, revealCr
                     type="password"
                     value={masterKey}
                     onChange={(e) => setMasterKey(e.target.value)}
-                    className="w-full border p-2 rounded-lg"
+                    className="form-input"
                     placeholder="Master Key"
                 />
 
                 <div className="flex justify-end gap-3 mt-4">
                     <button
                         onClick={() => setOpenMasterModal(false)}
-                        className="px-4 py-2 bg-gray-200 rounded-lg"
+                        className="px-4 py-2 bg-gray-200 rounded-lg cursor-pointer hover:bg-gray-300"
                     >
                         Cancel
                     </button>
@@ -36,7 +36,7 @@ const OpenMasterModal = ({ masterKey, setMasterKey, setOpenMasterModal, revealCr
                     <button
                         onClick={revealCredential}
                         disabled={verifying}
-                        className="px-4 py-2 bg-green-600 text-white rounded-lg"
+                        className="px-4 py-2 bg-green-600 text-white rounded-lg cursor-pointer hover:bg-green-700"
                     >
                         {verifying ? "Verifying..." : "Unlock"}
                     </button>

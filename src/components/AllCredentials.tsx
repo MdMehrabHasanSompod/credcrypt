@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import {
     MenuSquare,
     Eye,
-    Loader2,
     Trash2,
     FilePlusCorner,
 } from "lucide-react";
@@ -32,8 +31,8 @@ const typeStyles: Record<string, string> = {
 const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
     const credentials = useCredentialStore((state) => state.credentials);
     const [searchTerm, setSearchTerm] = useState("");
-    const [loadingId, setLoadingId] = useState<string | null>(null);
     const [openMasterModal, setOpenMasterModal] = useState(false);
+    const [openUnlockedCredModal, setOpenUnlockedCredModal] = useState(false);
     const [selectedCredId, setSelectedCredId] = useState<string | null>(null);
     const [masterKey, setMasterKey] = useState("");
     const [verifying, setVerifying] = useState(false);
@@ -66,11 +65,12 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
                     selectedCredId
                 }
             );
-            setSelectedCredential(result.data.credential);
+            setSelectedCredential(result.data.data);
             setOpenMasterModal(false);
             setMasterKey("");
+            setOpenUnlockedCredModal(true);
         } catch (error) {
-            console.error("Invalid master key");
+            console.log(error);
         } finally {
             setVerifying(false);
         }
@@ -456,10 +456,11 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
                     verifying={verifying}
                 />
             )}
-            {selectedCredential && (
+            {openUnlockedCredModal && (
                 <UnlockedCredential
-                    selectedCredential={selectedCredential}
+                    selectedCredential={selectedCredential as IDecryptedCredential}
                     copyToClipboard={copyToClipboard}
+                    setOpenUnlockedCredModal={setOpenUnlockedCredModal}
                 />
             )}
 
