@@ -21,7 +21,7 @@ const UnlockedCredential = ({
 
                 <button
                     onClick={() => setOpenUnlockedCredModal(false)}
-                    className="absolute top-2 right-2 sm:top-3 sm:right-3 text-gray-500 hover:text-green-900 text-2xl sm:text-3xl"
+                    className="absolute cursor-pointer top-2 right-2 sm:top-3 sm:right-3 text-gray-500 hover:text-green-900 text-2xl sm:text-3xl"
                 >
                     ✕
                 </button>

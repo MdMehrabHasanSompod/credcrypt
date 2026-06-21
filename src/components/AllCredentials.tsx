@@ -11,8 +11,10 @@ import ResponsiveSearch from "./ResponsiveSearch";
 import { useCredentialStore } from "@/stores/credentials.store";
 import axios from "axios";
 import { IDecryptedCredential } from "@/types/credential.type";
-import OpenMasterModal from "./OpenMasterModal";
 import UnlockedCredential from "./UnlockedCredential";
+import OpenViewMasterModal from "./OpenViewMasterModal";
+import OpenUpdateMasterModal from "./OpenUpdateMasterModal";
+import UpdateCredentialModal from "./UpdateCredentialModal";
 
 type propType = { setOpenMobileSidebar: React.Dispatch<React.SetStateAction<boolean>> };
 
@@ -31,12 +33,14 @@ const typeStyles: Record<string, string> = {
 const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
     const credentials = useCredentialStore((state) => state.credentials);
     const [searchTerm, setSearchTerm] = useState("");
-    const [openMasterModal, setOpenMasterModal] = useState(false);
+    const [openViewMasterModal, setOpenViewMasterModal] = useState<boolean>(false);
+    const [openUpdateMasterModal, setOpenUpdateMasterModal] = useState<boolean>(false);
     const [openUnlockedCredModal, setOpenUnlockedCredModal] = useState(false);
     const [selectedCredId, setSelectedCredId] = useState<string | null>(null);
     const [masterKey, setMasterKey] = useState("");
     const [verifying, setVerifying] = useState(false);
     const [selectedCredential, setSelectedCredential] = useState<IDecryptedCredential | null>(null);
+    const [updateCredentialModal, setUpdateCredentialModal] = useState<boolean>(false);
 
     const filteredCredentials = credentials?.filter(
         (c) =>
@@ -53,7 +57,7 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
 
     const handleViewClick = (id: string) => {
         setSelectedCredId(id);
-        setOpenMasterModal(true);
+        setOpenViewMasterModal(true);
     };
 
     const revealCredential = async () => {
@@ -66,7 +70,7 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
                 }
             );
             setSelectedCredential(result.data.data);
-            setOpenMasterModal(false);
+            setOpenViewMasterModal(false);
             setMasterKey("");
             setOpenUnlockedCredModal(true);
         } catch (error) {
@@ -79,6 +83,29 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
     const copyToClipboard = async (text: string) => {
         await navigator.clipboard.writeText(text);
     };
+
+
+    const handleUpdateClick = (id: string) => {
+        setSelectedCredId(id);
+        setOpenUpdateMasterModal(true);
+    }
+
+
+    const verifyUpdateRequest = async () => {
+        try {
+            setVerifying(true);
+            const result = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/verify-update-request`, { masterKey });
+            if (result.status === 200) {
+                setOpenUpdateMasterModal(false)
+                setUpdateCredentialModal(true)
+            }
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setVerifying(false)
+        }
+    }
+
 
     return (
         <div className="w-full max-w-full px-3 sm:px-4 md:px-6 lg:px-8 overflow-hidden">
@@ -186,19 +213,18 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
 
                                         <td className="px-4 py-3">
                                             <button
-                                                onClick={() =>
-
-                                                    cred._id
-
-                                                }
+                                                onClick={() => handleViewClick(cred._id)}
                                                 className="text-green-700 cursor-pointer"
                                             >
-                                                <Eye size={22} onClick={() => handleViewClick(cred._id)} />
+                                                <Eye size={22} />
                                             </button>
                                         </td>
 
                                         <td className="px-4 py-3">
-                                            <FilePlusCorner size={22} className="w-7 h-7 text-blue-500 cursor-pointer hover:bg-blue-100 hover:rounded-full p-1" />
+                                            <button
+                                                onClick={() => handleUpdateClick(cred._id)}>
+                                                <FilePlusCorner size={22} className="w-7 h-7 text-blue-500 cursor-pointer hover:bg-blue-100 hover:rounded-full p-1" />
+                                            </button>
                                         </td>
 
                                         <td className="px-4 py-3 text-sm text-gray-500">
@@ -322,10 +348,12 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
                                             onClick={() => handleViewClick(cred._id)}
                                             className="flex items-center gap-1 px-3 py-2 rounded-lg bg-green-50 text-green-700 font-semibold"
                                         >
-                                            <Eye size={16} />
+                                            <Eye size={16} className="cursor-pointer" />
                                             View
                                         </button>
-                                        <button className="flex items-center gap-1 px-3 py-2 rounded-lg bg-blue-50 text-blue-700 font-semibold">
+                                        <button
+                                            onClick={() => handleUpdateClick(cred._id)}
+                                            className="flex items-center gap-1 px-3 py-2 rounded-lg bg-blue-50 text-blue-700 font-semibold">
                                             <FilePlusCorner size={16} className="cursor-pointer" /> Update
                                         </button>
                                     </div>
@@ -431,10 +459,12 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
                                             onClick={() => handleViewClick(cred._id)}
                                             className="flex text-xs items-center gap-1 px-3 py-2 rounded-lg bg-green-50 text-green-700 font-semibold"
                                         >
-                                            <Eye size={16} />
+                                            <Eye size={16} className="cursor-pointer" />
                                             View
                                         </button>
-                                        <button className="flex text-xs items-center gap-1 px-3 py-2 rounded-lg bg-blue-50 text-blue-700 font-semibold">
+                                        <button
+                                            onClick={() => handleUpdateClick(cred._id)}
+                                            className="flex text-xs items-center gap-1 px-3 py-2 rounded-lg bg-blue-50 text-blue-700 font-semibold">
                                             <FilePlusCorner size={16} /> Update
                                         </button>
                                     </div>
@@ -447,15 +477,26 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
                     )
                 )}
             </div>
-            {openMasterModal && (
-                <OpenMasterModal
+            {openViewMasterModal && (
+                <OpenViewMasterModal
                     masterKey={masterKey}
                     setMasterKey={setMasterKey}
-                    setOpenMasterModal={setOpenMasterModal}
+                    setOpenViewMasterModal={setOpenViewMasterModal}
                     revealCredential={revealCredential}
                     verifying={verifying}
                 />
             )}
+
+            {openUpdateMasterModal && (
+                <OpenUpdateMasterModal
+                    masterKey={masterKey}
+                    setMasterKey={setMasterKey}
+                    setOpenUpdateMasterModal={setOpenUpdateMasterModal}
+                    verifyUpdateRequest={verifyUpdateRequest}
+                    verifying={verifying}
+                />
+            )}
+
             {openUnlockedCredModal && (
                 <UnlockedCredential
                     selectedCredential={selectedCredential as IDecryptedCredential}
@@ -463,6 +504,15 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
                     setOpenUnlockedCredModal={setOpenUnlockedCredModal}
                 />
             )}
+            {
+                updateCredentialModal && (
+                    <UpdateCredentialModal
+                        credId={selectedCredId as string}
+                        masterKey={masterKey}
+                        setUpdateCredentialModal={setUpdateCredentialModal}
+                    />
+                )
+            }
 
         </div>
     );

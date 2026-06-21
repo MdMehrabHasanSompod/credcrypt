@@ -2,16 +2,17 @@ import connectDB from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import { Credential } from "@/models/credential.model";
 import { auth } from "@/lib/auth";
-import { encrypt } from "@/lib/crypto";
+import { encrypt, hashMasterKey } from "@/lib/crypto";
 import { ICredential } from "@/types/credential.type";
+import { User } from "@/models/user.model";
 
 export const PATCH = async (request: NextRequest) => {
     try {
-        const { credentialId, updatedName, updatedEmail, updatedType, updatedValue } = await request.json()
+        const { masterKey, credentialId, updatedName, updatedEmail, updatedType, updatedValue } = await request.json()
 
         if (!updatedName?.trim() && !updatedType?.trim() && !updatedValue?.trim() && !updatedEmail?.trim()) {
             return NextResponse.json(
-                { success: false, message: "Missing required fields" },
+                { success: false, message: "No update fields provided" },
                 { status: 400 }
             )
         }
@@ -26,7 +27,7 @@ export const PATCH = async (request: NextRequest) => {
 
         const session = await auth();
 
-        if (!session?.user?.id) {
+        if (!session?.user?.id || !masterKey) {
             return NextResponse.json(
                 { success: false, message: "Unauthorized attempt" },
                 { status: 401 }
@@ -34,6 +35,26 @@ export const PATCH = async (request: NextRequest) => {
         }
 
         const sessionUserId = session.user.id;
+
+        await connectDB();
+
+        const sessionUser = await User.findById(sessionUserId).select("+masterKeySalt +masterKeyHash");
+
+        if (!sessionUser) {
+            return NextResponse.json(
+                { success: false, message: "User not found" },
+                { status: 404 }
+            )
+        }
+
+        const masterKeyHash = hashMasterKey(masterKey, sessionUser.masterKeySalt)
+
+        if (sessionUser.masterKeyHash !== masterKeyHash) {
+            return NextResponse.json(
+                { success: false, message: "Attempted to unauthorized access" },
+                { status: 401 }
+            );
+        }
 
         const valuesToUpdate: Partial<ICredential> = {}
 
@@ -43,8 +64,6 @@ export const PATCH = async (request: NextRequest) => {
         if (updatedValue?.trim()) {
             valuesToUpdate.value = encrypt(updatedValue)
         }
-
-        await connectDB();
 
         const updatedCredential = await Credential.findOneAndUpdate({ _id: credentialId, userId: sessionUserId },
             {
@@ -67,11 +86,13 @@ export const PATCH = async (request: NextRequest) => {
             createdAt: updatedCredential.createdAt,
             updatedAt: updatedCredential.updatedAt,
         };
+
         return NextResponse.json({
             success: true, message: "Credential updated successfully", data: safeUpdatedCredential
         }, { status: 200 })
 
-    } catch (error: any) {
+    } catch (error) {
+        console.log(error)
         return NextResponse.json(
             { success: false, message: "Internal server error" },
             { status: 500 }
