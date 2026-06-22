@@ -15,6 +15,8 @@ import UnlockedCredential from "./UnlockedCredential";
 import OpenViewMasterModal from "./OpenViewMasterModal";
 import OpenUpdateMasterModal from "./OpenUpdateMasterModal";
 import UpdateCredentialModal from "./UpdateCredentialModal";
+import OpenDeleteMasterModal from "./OpenDeleteMasterModal";
+import DeleteCredentialModal from "./DeleteCredentialModal";
 
 type propType = { setOpenMobileSidebar: React.Dispatch<React.SetStateAction<boolean>> };
 
@@ -35,12 +37,15 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [openViewMasterModal, setOpenViewMasterModal] = useState<boolean>(false);
     const [openUpdateMasterModal, setOpenUpdateMasterModal] = useState<boolean>(false);
-    const [openUnlockedCredModal, setOpenUnlockedCredModal] = useState(false);
+    const [openUnlockedCredModal, setOpenUnlockedCredModal] = useState<boolean>(false);
+    const [openDeleteMasterModal, setOpenDeleteMasterModal] = useState<boolean>(false);
     const [selectedCredId, setSelectedCredId] = useState<string | null>(null);
-    const [masterKey, setMasterKey] = useState("");
-    const [verifying, setVerifying] = useState(false);
+    const [masterKey, setMasterKey] = useState<string>("");
+    const [verifying, setVerifying] = useState<boolean>(false);
     const [selectedCredential, setSelectedCredential] = useState<IDecryptedCredential | null>(null);
     const [updateCredentialModal, setUpdateCredentialModal] = useState<boolean>(false);
+    const [deleteCredentialModal, setDeleteCredentialModal] = useState<boolean>(false);
+    const [selectedCredName, setSelectedCredName] = useState<string>("")
 
     const filteredCredentials = credentials?.filter(
         (c) =>
@@ -55,9 +60,20 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
                 .includes(searchTerm.toLowerCase())
     );
 
-    const handleViewClick = (id: string) => {
+    const handleClick = (id: string, request: string, name?: string) => {
         setSelectedCredId(id);
-        setOpenViewMasterModal(true);
+        if (request === "view") {
+            setOpenViewMasterModal(true);
+        }
+
+        if (request === "update") {
+            setOpenUpdateMasterModal(true);
+        }
+
+        if (request === "delete") {
+            setOpenDeleteMasterModal(true);
+            setSelectedCredName(name as string)
+        }
     };
 
     const revealCredential = async () => {
@@ -85,11 +101,6 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
     };
 
 
-    const handleUpdateClick = (id: string) => {
-        setSelectedCredId(id);
-        setOpenUpdateMasterModal(true);
-    }
-
 
     const verifyUpdateRequest = async () => {
         try {
@@ -98,6 +109,21 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
             if (result.status === 200) {
                 setOpenUpdateMasterModal(false)
                 setUpdateCredentialModal(true)
+            }
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setVerifying(false)
+        }
+    }
+
+    const verifyDeleteRequest = async () => {
+        try {
+            setVerifying(true);
+            const result = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/verify-update-request`, { masterKey });
+            if (result.status === 200) {
+                setOpenDeleteMasterModal(false)
+                setDeleteCredentialModal(true)
             }
         } catch (error) {
             console.log(error)
@@ -213,7 +239,7 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
 
                                         <td className="px-4 py-3">
                                             <button
-                                                onClick={() => handleViewClick(cred._id)}
+                                                onClick={() => handleClick(cred._id, "view")}
                                                 className="text-green-700 cursor-pointer"
                                             >
                                                 <Eye size={22} />
@@ -222,7 +248,7 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
 
                                         <td className="px-4 py-3">
                                             <button
-                                                onClick={() => handleUpdateClick(cred._id)}>
+                                                onClick={() => handleClick(cred._id, "update")}>
                                                 <FilePlusCorner size={22} className="w-7 h-7 text-blue-500 cursor-pointer hover:bg-blue-100 hover:rounded-full p-1" />
                                             </button>
                                         </td>
@@ -244,7 +270,7 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
                                         </td>
 
                                         <td className="px-4 py-3">
-                                            <Trash2
+                                            <Trash2 onClick={() => handleClick(cred._id, "delete", cred.name)}
                                                 size={
                                                     22
                                                 }
@@ -345,25 +371,23 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
                                 <div className="flex justify-between items-center mt-4 pt-3 border-t">
                                     <div className="flex items-center justify-between gap-2">
                                         <button
-                                            onClick={() => handleViewClick(cred._id)}
+                                            onClick={() => handleClick(cred._id, "view")}
                                             className="flex items-center gap-1 px-3 py-2 rounded-lg bg-green-50 text-green-700 font-semibold"
                                         >
                                             <Eye size={16} className="cursor-pointer" />
                                             View
                                         </button>
                                         <button
-                                            onClick={() => handleUpdateClick(cred._id)}
+                                            onClick={() => handleClick(cred._id, "update")}
                                             className="flex items-center gap-1 px-3 py-2 rounded-lg bg-blue-50 text-blue-700 font-semibold">
                                             <FilePlusCorner size={16} className="cursor-pointer" /> Update
                                         </button>
                                     </div>
+                                    <button onClick={() => handleClick(cred._id, "delete", cred.name)} className="cursor-pointer text-red-600">
+                                        <Trash2 size={20} />
+                                    </button>
 
-                                    <Trash2
-                                        size={
-                                            20
-                                        }
-                                        className="cursor-pointer text-red-600"
-                                    />
+
                                 </div>
                             </div>
                         )
@@ -456,19 +480,19 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
                                 <div className="flex justify-between items-center mt-4 pt-3 border-t">
                                     <div className="flex items-center justify-between gap-3">
                                         <button
-                                            onClick={() => handleViewClick(cred._id)}
+                                            onClick={() => handleClick(cred._id, "view")}
                                             className="flex text-xs items-center gap-1 px-3 py-2 rounded-lg bg-green-50 text-green-700 font-semibold"
                                         >
                                             <Eye size={16} className="cursor-pointer" />
                                             View
                                         </button>
                                         <button
-                                            onClick={() => handleUpdateClick(cred._id)}
+                                            onClick={() => handleClick(cred._id, "update")}
                                             className="flex text-xs items-center gap-1 px-3 py-2 rounded-lg bg-blue-50 text-blue-700 font-semibold">
                                             <FilePlusCorner size={16} /> Update
                                         </button>
                                     </div>
-                                    <button className="flex items-center gap-1 px-3 py-2 rounded-lg bg-red-50 text-red-700 font-semibold">
+                                    <button onClick={() => handleClick(cred._id, "delete", cred.name)} className="flex items-center gap-1 px-3 py-2 rounded-lg bg-red-50 text-red-700 font-semibold">
                                         <Trash2 size={16} />
                                     </button>
                                 </div>
@@ -497,6 +521,16 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
                 />
             )}
 
+            {openDeleteMasterModal && (
+                <OpenDeleteMasterModal
+                    masterKey={masterKey}
+                    setMasterKey={setMasterKey}
+                    setOpenDeleteMasterModal={setOpenDeleteMasterModal}
+                    verifyDeleteRequest={verifyDeleteRequest}
+                    verifying={verifying}
+                />
+            )}
+
             {openUnlockedCredModal && (
                 <UnlockedCredential
                     selectedCredential={selectedCredential as IDecryptedCredential}
@@ -510,6 +544,17 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
                         credId={selectedCredId as string}
                         masterKey={masterKey}
                         setUpdateCredentialModal={setUpdateCredentialModal}
+                    />
+                )
+            }
+
+            {
+                deleteCredentialModal && (
+                    <DeleteCredentialModal
+                        credId={selectedCredId as string}
+                        credentialName={selectedCredName}
+                        masterKey={masterKey}
+                        setDeleteCredentialModal={setDeleteCredentialModal}
                     />
                 )
             }
