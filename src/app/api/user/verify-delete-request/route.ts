@@ -1,16 +1,14 @@
-import connectDB from "@/lib/db";
-import { NextRequest, NextResponse } from "next/server";
-import { Credential } from "@/models/credential.model";
 import { auth } from "@/lib/auth";
-import mongoose from "mongoose";
-import { User } from "@/models/user.model";
 import { hashMasterKey } from "@/lib/crypto";
+import connectDB from "@/lib/db";
+import { User } from "@/models/user.model";
+import { NextResponse, NextRequest } from "next/server";
 
-export const DELETE = async (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
     try {
+        const session = await auth();
         const { masterKey, password } = await request.json()
 
-        const session = await auth();
 
         if (!session?.user?.id || !masterKey) {
             return NextResponse.json(
@@ -19,11 +17,10 @@ export const DELETE = async (request: NextRequest) => {
             );
         }
 
+        const sessionUserId = session.user.id
 
-        const sessionUserId = session.user.id;
+        await connectDB()
 
-
-        await connectDB();
         const sessionUser = await User.findById(sessionUserId).select("+masterKeySalt +masterKeyHash");
 
         if (!sessionUser) {
@@ -42,23 +39,13 @@ export const DELETE = async (request: NextRequest) => {
             );
         }
 
-
-        const deletedCredential = await Credential.findOneAndDelete({ _id: credId, userId: sessionUserId, })
-
-        if (!deletedCredential) {
-            return NextResponse.json(
-                { success: false, message: "Credential not found" },
-                { status: 404 }
-            );
-        }
-
-        return NextResponse.json({
-            success: true, message: "Credential deleted successfully"
-        }, { status: 200 })
-
-    } catch (error: any) {
         return NextResponse.json(
-            { success: false, message: "Internal server error" },
+            { success: true, message: "Master Key Verified Successfully" },
+            { status: 200 }
+        )
+    } catch (error) {
+        return NextResponse.json(
+            { success: false, message: "Internal Server Error" },
             { status: 500 }
         )
     }
