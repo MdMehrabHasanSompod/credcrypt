@@ -52,7 +52,7 @@ export const PATCH = async (request: NextRequest) => {
         }
 
         const updatedUser = await User.findByIdAndUpdate(sessionUserId, updateData, {
-            new: true,
+            returnDocument: "after",
             runValidators: true,
         })
 

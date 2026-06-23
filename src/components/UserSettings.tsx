@@ -2,10 +2,10 @@
 import { useUserStore } from '@/stores/user.store';
 import axios from 'axios';
 import { Loader2, LogOut, MenuSquare, PlusCircle, RotateCcw, Settings, Trash2, UploadIcon, User, Wrench } from 'lucide-react'
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import Image from 'next/image'
 import { useRouter } from 'next/navigation';
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 
 type propType = {
     setOpenMobileSidebar: React.Dispatch<React.SetStateAction<boolean>>
@@ -13,7 +13,6 @@ type propType = {
 
 const UserSettings = ({ setOpenMobileSidebar }: propType) => {
     const user = useUserStore((state) => state.user)
-    const session = useSession()
     const setUser = useUserStore((state) => state.setUser)
     const [updateProfile, setUpdateProfile] = useState<boolean>(false)
     const [updatedAvatar, setUpdatedAvatar] = useState<File | null>(null)
@@ -48,12 +47,11 @@ const UserSettings = ({ setOpenMobileSidebar }: propType) => {
         setDisplayUpdatedAvatar(URL.createObjectURL(file));
     };
 
-    const handleUserUpdate = async (e: FormEvent) => {
+    const handleUserUpdate = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
             setUpdateLoading(true)
             const formData = new FormData();
-            if (user?._id) formData.append("id", user._id)
             if (updatedName !== user?.name) formData.append("updatedName", updatedName);
             if (updatedPhone !== user?.phone) formData.append("updatedPhone", updatedPhone);
             if (updatedAvatar) formData.append("updatedAvatar", updatedAvatar);
