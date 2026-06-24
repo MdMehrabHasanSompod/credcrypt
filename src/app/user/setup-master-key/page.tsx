@@ -4,7 +4,7 @@ import { Loader2, Copy, CheckCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function SetMasterKey() {
+const setMasterKey = () => {
     const [key, setKey] = useState("");
     const [loading, setLoading] = useState(true);
     const [copied, setCopied] = useState(false);
@@ -110,3 +110,5 @@ export default function SetMasterKey() {
         </div>
     );
 }
+
+export default setMasterKey;

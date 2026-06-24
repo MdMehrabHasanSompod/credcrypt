@@ -21,7 +21,6 @@ const UserSettings = ({ setOpenMobileSidebar }: propType) => {
     const [updatedPhone, setUpdatedPhone] = useState<string>(user?.phone as string || "")
     const [updateLoading, setUpdateLoading] = useState<boolean>(false)
     const [addAccountLoading, setAddAccountLoading] = useState<boolean>(false)
-    const [deleteLoading, setDeleteLoading] = useState<boolean>(false)
     const [removeAvatar, setRemoveAvatar] = useState<boolean>(false);
     const router = useRouter()
 
@@ -86,26 +85,6 @@ const UserSettings = ({ setOpenMobileSidebar }: propType) => {
         router.push("/register");
         setAddAccountLoading(false)
     };
-
-    const handleDeleteAccount = async () => {
-        setDeleteLoading(true)
-        try {
-            const result = await axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/delete-account`, {
-                masterKey,
-                password
-            })
-            if (result.status === 200) {
-                await signOut({ redirect: false });
-                router.push("/")
-            }
-
-        } catch (error) {
-            console.log(error);
-
-        } finally {
-            setDeleteLoading(false)
-        }
-    }
 
 
     return (
@@ -213,7 +192,7 @@ const UserSettings = ({ setOpenMobileSidebar }: propType) => {
                         <h2 className='text-white text-2xl font-semibold text-center flex items-center justify-center gap-1'><Settings size={24} /> Account Settings</h2>
                         <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8'>
                             <button onClick={() => router.push("/user/reset-password")} className='bg-purple-500 shadow-md p-3 rounded-md flex items-center justify-center gap-1 text-white font-semibold cursor-pointer hover:bg-purple-600'><RotateCcw size={18} /> Reset Password</button>
-                            <button onClick={handleDeleteAccount} className='bg-red-500 shadow-md p-3 rounded-md flex items-center justify-center gap-1 text-white font-semibold cursor-pointer hover:bg-red-600'>{deleteLoading ? <Loader2 size={18} className='animate-spin' /> : <Trash2 size={18} />}  Delete Account</button>
+                            <button onClick={() => router.push("/user/delete-account")} className='bg-red-500 shadow-md p-3 rounded-md flex items-center justify-center gap-1 text-white font-semibold cursor-pointer hover:bg-red-600'><Trash2 size={18} />  Delete Account</button>
                         </div>
                     </div>
 

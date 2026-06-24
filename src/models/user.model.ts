@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema<IUser>({
         type: String,
         match: [/^\+?01[3-9]\d{8}$/, "Please enter a valid phone number"],
     },
+    hasSetUpPassword: {
+        type: Boolean,
+        default: false,
+    },
     password: {
         type: String,
         minlength: [8, "Password must be at least 8 characters"],

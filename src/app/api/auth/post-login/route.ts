@@ -23,6 +23,12 @@ export const GET = async () => {
             );
         }
 
+        if (!user.hasSetUpPassword) {
+            return NextResponse.redirect(
+                new URL("/user/setup-password", process.env.NEXT_PUBLIC_BASE_URL!)
+            );
+        }
+
         if (!user.hasSetUpMasterKey) {
             return NextResponse.redirect(
                 new URL("/user/setup-master-key", process.env.NEXT_PUBLIC_BASE_URL!)

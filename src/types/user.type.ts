@@ -3,6 +3,7 @@ export interface IUser {
     name: string;
     email: string;
     password: string;
+    hasSetUpPassword: boolean;
     masterKeyHash: string;
     masterKeySalt: string;
     hasSetUpMasterKey: boolean;

@@ -44,6 +44,7 @@ export const POST = async (request: NextRequest) => {
             email,
             phone,
             password: hashedPassword,
+            hasSetUpPassword: true,
             masterKeyHash,
             masterKeySalt,
         })
