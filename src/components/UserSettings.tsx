@@ -57,7 +57,7 @@ const UserSettings = ({ setOpenMobileSidebar }: propType) => {
             if (updatedAvatar) formData.append("updatedAvatar", updatedAvatar);
             if (removeAvatar) formData.append("removeAvatar", "true");
 
-            const result = await axios.patch("/api/user/update-user", formData)
+            const result = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/update-user`, formData)
 
             console.log(result);
 
@@ -90,15 +90,19 @@ const UserSettings = ({ setOpenMobileSidebar }: propType) => {
     const handleDeleteAccount = async () => {
         setDeleteLoading(true)
         try {
-            const result = await fetch(`/api/user/delete-account?id=${user?._id}}`, { method: "DELETE" })
-            setDeleteLoading(false)
-            if (result.ok) {
+            const result = await axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/delete-account`, {
+                masterKey,
+                password
+            })
+            if (result.status === 200) {
                 await signOut({ redirect: false });
                 router.push("/")
             }
 
         } catch (error) {
             console.log(error);
+
+        } finally {
             setDeleteLoading(false)
         }
     }
