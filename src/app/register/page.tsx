@@ -17,7 +17,7 @@ const Register = () => {
     const [showPass, setShowPass] = useState(false);
     const router = useRouter()
 
-    const submitHandler = async (e: FormEvent) => {
+    const submitHandler = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             setLoading(true);
