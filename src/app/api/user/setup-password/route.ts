@@ -4,7 +4,7 @@ import { User } from "@/models/user.model";
 import { NextResponse, NextRequest } from "next/server";
 import * as bcrypt from "bcrypt";
 
-export const POST = async (request: NextRequest) => {
+export const PATCH = async (request: NextRequest) => {
     try {
         const { password } = await request.json()
 
@@ -53,17 +53,17 @@ export const POST = async (request: NextRequest) => {
 
         const hashedPassword = await bcrypt.hash(password, 10)
 
-        await User.findByIdAndUpdate(sessionUserId, {
+        const updatedUser = await User.findByIdAndUpdate(sessionUserId, {
             $set: {
                 password: hashedPassword,
                 hasSetUpPassword: true,
             }
-        })
+        }, { returnDocument: "after", runValidators: true })
 
 
 
         return NextResponse.json(
-            { success: true, message: "Password added successfully" },
+            { success: true, message: "Password added successfully", updatedUser },
             { status: 200 }
         )
     } catch (error) {

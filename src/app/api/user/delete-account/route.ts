@@ -25,7 +25,7 @@ export const DELETE = async (request: NextRequest) => {
 
 
         await connectDB();
-        const sessionUser = await User.findById(sessionUserId).select("+masterKeySalt +masterKeyHash");
+        const sessionUser = await User.findById(sessionUserId).select("+masterKeySalt +masterKeyHash +password");
 
         if (!sessionUser) {
             return NextResponse.json(
@@ -86,6 +86,7 @@ export const DELETE = async (request: NextRequest) => {
         }
 
     } catch (error: any) {
+        console.log(error)
         return NextResponse.json(
             { success: false, message: "Internal server error" },
             { status: 500 }

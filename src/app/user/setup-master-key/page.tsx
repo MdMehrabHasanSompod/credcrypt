@@ -61,7 +61,8 @@ const setMasterKey = () => {
                 </h1>
 
                 <p className="text-center text-sm text-gray-500 mt-2">
-                    This master key is available for only <b>5 minutes</b>. After that it will expire.
+                    This master key is available for only <b>this time</b>. After that you <b>can't accees</b> it.
+                    Without this key, you can't create or access your credentials. Save it wisely.
                     If you lose it, you can recover it by contacting support.
                 </p>
 

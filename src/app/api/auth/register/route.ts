@@ -49,7 +49,7 @@ export const POST = async (request: NextRequest) => {
             masterKeySalt,
         })
 
-        await redis.set(`credcrypt-masterKey-${createdUser._id}`, masterKey, { ex: 300 })
+        await redis.set(`credcrypt-masterKey-${createdUser._id}`, masterKey)
 
         const newUser: any = {
             name: createdUser.name,

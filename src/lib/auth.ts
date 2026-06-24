@@ -57,7 +57,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         masterKeyHash,
                         masterKeySalt,
                     })
-                    await redis.set(`credcrypt-masterKey-${ExistedUser._id}`, masterKey, { ex: 300 })
+                    await redis.set(`credcrypt-masterKey-${ExistedUser._id}`, masterKey)
                 }
                 user.id = ExistedUser._id.toString();
             }

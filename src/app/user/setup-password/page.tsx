@@ -20,20 +20,22 @@ const Register = () => {
 
     const router = useRouter();
 
-    const submitHandler = async (
-        e: React.SubmitEvent<HTMLFormElement>
-    ) => {
+    const submitHandler = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try {
             setLoading(true);
 
-            const result = await axios.post("/api/user/setup-password", {
+            const result = await axios.patch("/api/user/setup-password", {
                 password,
             });
 
             if (result.status === 200) {
-                router.push("/user/dashboard");
+                if (!result.data.updatedUser.hasSetUpMasterKey) {
+                    router.push("/user/setup-master-key")
+                } else {
+                    router.push("user/dashboard")
+                }
             }
         } catch (error) {
             console.log(error);
