@@ -1,12 +1,13 @@
 import connectDB from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import { Credential } from "@/models/credential.model";
-import { encrypt } from "@/lib/crypto";
+import { encrypt, hashMasterKey } from "@/lib/crypto";
 import { auth } from "@/lib/auth";
+import { User } from "@/models/user.model";
 
 export const POST = async (request: NextRequest) => {
     try {
-        const { name, email, type, value } = await request.json()
+        const { masterKey, name, email, type, value } = await request.json()
 
 
         if (!name || !type || !value) {
@@ -16,23 +17,42 @@ export const POST = async (request: NextRequest) => {
             )
         }
 
-
         const session = await auth();
 
-        if (!session?.user?.id) {
+        if (!session?.user?.id || !masterKey) {
             return NextResponse.json(
-                { success: false, message: "Unauthorized attempt" },
+                { success: false, message: "Attempted to unauthorized access" },
                 { status: 401 }
             );
         }
 
         const sessionUserId = session.user.id;
 
+        await connectDB();
+
+        const sessionUser = await User.findById(sessionUserId).select("+masterKeySalt +masterKeyHash");
+
+        if (!sessionUser) {
+            return NextResponse.json(
+                { success: false, message: "User not found" },
+                { status: 404 }
+            )
+        }
+
+        const masterKeyHash = hashMasterKey(masterKey, sessionUser.masterKeySalt)
+
+        if (sessionUser.masterKeyHash !== masterKeyHash) {
+            return NextResponse.json(
+                { success: false, message: "Attempted to unauthorized access" },
+                { status: 401 }
+            );
+        }
+
+
         const encryptedValue = encrypt(value);
         if (!encryptedValue?.iv || !encryptedValue?.data || !encryptedValue?.tag) {
             throw new Error("Encryption failed");
         }
-        await connectDB();
 
         const newCredential = await Credential.create({
             userId: sessionUserId,
@@ -56,6 +76,7 @@ export const POST = async (request: NextRequest) => {
         }, { status: 201 })
 
     } catch (error: any) {
+        console.log(error)
         if (error.code === 11000) {
             return NextResponse.json(
                 {

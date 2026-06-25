@@ -1,5 +1,5 @@
 "use client"
-import { Files, Home, LayoutDashboard, LogOut, Settings, X } from 'lucide-react'
+import { Files, Home, LayoutDashboard, LogOut, PlusCircle, Settings, X } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -33,6 +33,12 @@ const UserMobileSidebar = ({ setCurrentMenu, setOpenMobileSidebar }: propType) =
                         <LayoutDashboard className='w-6 h-6' />
                         <p className="text-md lg:text-lg transition-opacity duration-300">
                             Dashboard
+                        </p>
+                    </div>
+                    <div className="flex items-center justify-start gap-1 hover:bg-green-200  hover:text-green-800 cursor-pointer text-white  transition-opacity duration-600 px-2 lg:px-4 py-3" onClick={() => setCurrentMenu("add-credential")}>
+                        <PlusCircle className='w-6 h-6' />
+                        <p className="text-md lg:text-lg transition-opacity duration-300">
+                            Add Credential
                         </p>
                     </div>
                     <div className="flex items-center justify-start gap-1 hover:bg-green-200  hover:text-green-800 cursor-pointer text-white  transition-opacity duration-600 px-2 lg:px-4 py-3" onClick={() => setCurrentMenu("all-credentials")}>

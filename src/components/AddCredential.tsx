@@ -1,28 +1,28 @@
 "use client"
 import React, { useState } from 'react'
-import { Heart, Loader2, MenuSquare, PlusCircle, } from 'lucide-react'
+import { MenuSquare, PlusCircle, } from 'lucide-react'
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import OpenVerifySaveModal from './OpenVerifySaveModal';
+import { ICredType } from '@/types/credential.type';
 
 type propType = {
     setOpenMobileSidebar: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-type CredentialType = "" | "password" | "pin" | "security-code" | "security-question" | "recovery-code" | "otp" | "session-token" | "api-key" | "others";
+export type CredentialType = "" | "password" | "pin" | "security-code" | "security-question" | "recovery-code" | "otp" | "session-token" | "api-key" | "others";
 
 
-const Dashboard = ({ setOpenMobileSidebar }: propType) => {
+const AddCredential = ({ setOpenMobileSidebar }: propType) => {
     const session = useSession()
-    const router = useRouter()
-
     const [name, setName] = useState<string>("")
     const [email, setEmail] = useState<string>("")
     const [type, setType] = useState<CredentialType>("")
     const [value, setValue] = useState<string>("")
-    const [loading, setLoading] = useState<boolean>(false)
+    const [openVerifySaveModal, setOpenVerifySaveModal] = useState<boolean>(false);
 
-    const handleSubmit = async (e: React.SubmitEvent) => {
+
+
+    const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (!type) {
             alert("Please select a credential type!")
@@ -32,47 +32,19 @@ const Dashboard = ({ setOpenMobileSidebar }: propType) => {
             alert("Identified Suspicious Attempt")
             return;
         }
-        setLoading(true)
-        try {
-            const result = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/add-credential`, {
-                name,
-                email,
-                type,
-                value
-            })
-
-            console.log(result)
-
-            setName("")
-            setEmail("")
-            setType("")
-            setValue("")
-        } catch (error) {
-            console.error(error)
-        } finally {
-            setLoading(false)
-        }
+        setOpenVerifySaveModal(true)
     }
 
     return (
         <div className='w-full mx-auto overflow-x-hidden'>
             <h1 className='text-xl md:text-2xl lg:text-3xl text-white font-semibold bg-green-900 w-full py-4 px-8 shadow-md rounded-md my-2 flex items-center justify-between gap-4'>
-                Dashboard
+                Add Credential
                 <MenuSquare
                     size={30}
                     className='block lg:hidden cursor-pointer'
                     onClick={() => setOpenMobileSidebar(prev => !prev)}
                 />
             </h1>
-            <div className='flex flex-col items-center justify-center gap-4 mt-10'>
-                <p className='text-xl md:text-3xl font-semibold text-green-800 flex items-center justify-center gap-1'>
-                    Welcome Back <Heart size={40} fill='red' strokeWidth={0} />
-                </p>
-                <p className='text-2xl md:text-4xl font-bold text-green-900'>
-                    {session.data?.user.name}
-                </p>
-            </div>
-
             <div className='flex flex-col md:flex-row justify-center gap-8 mt-10 md:mt-20 px-4'>
 
                 <div className='flex-1 bg-white shadow-lg border border-gray-100 p-6 rounded-xl'>
@@ -126,12 +98,10 @@ const Dashboard = ({ setOpenMobileSidebar }: propType) => {
                         />
 
                         <button
-                            type="submit"
-                            disabled={loading}
+                            type='submit'
                             className='w-full flex items-center justify-center gap-2 bg-green-800 hover:bg-green-900 text-white py-3 rounded-lg font-semibold transition cursor-pointer'
                         >
-                            {loading && <Loader2 size={20} className="animate-spin" />}
-                            {loading ? "Saving" : "Save Credential"}
+                            Save Credential
                         </button>
                     </form>
                 </div>
@@ -146,8 +116,21 @@ const Dashboard = ({ setOpenMobileSidebar }: propType) => {
                 </div>
 
             </div>
+            {openVerifySaveModal && (
+                <OpenVerifySaveModal
+                    setOpenVerifySaveModal={setOpenVerifySaveModal}
+                    name={name}
+                    email={email}
+                    type={type as ICredType}
+                    value={value}
+                    setName={setName}
+                    setEmail={setEmail}
+                    setType={setType}
+                    setValue={setValue}
+                />
+            )}
         </div>
     )
 }
 
-export default Dashboard
+export default AddCredential

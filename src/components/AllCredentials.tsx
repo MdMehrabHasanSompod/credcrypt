@@ -134,8 +134,8 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
 
 
     return (
-        <div className="w-full max-w-full px-3 sm:px-4 md:px-6 lg:px-8 overflow-hidden">
-            <h1 className="text-lg md:text-2xl lg:text-3xl text-white font-semibold bg-green-900 w-full py-4 px-5 md:px-8 shadow-md rounded-xl my-3 flex items-center justify-between gap-4">
+        <div className="w-full mx-auto overflow-hidden">
+            <h1 className="text-xl md:text-2xl lg:text-3xl text-white font-semibold bg-green-900 w-full py-4 px-8 shadow-md rounded-md my-2 flex items-center justify-between gap-4">
                 All Credentials
 
                 <MenuSquare

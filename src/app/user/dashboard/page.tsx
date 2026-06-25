@@ -5,6 +5,7 @@ import UserSidebar from '@/components/UserSidebar'
 import UserMobileSidebar from '@/components/UserMobileSidebar'
 import UserSettings from '@/components/UserSettings'
 import AllCredentials from '@/components/AllCredentials'
+import AddCredential from '@/components/AddCredential'
 
 const UserDashboard = () => {
     const [currentMenu, setCurrentMenu] = useState("dashboard")
@@ -18,9 +19,10 @@ const UserDashboard = () => {
             }
             <main className='flex-1 w-full  p-5'>
                 {
-                    currentMenu === "dashboard" ? <Dashboard setOpenMobileSidebar={setOpenMobileSidebar} />
-                        : currentMenu === "all-credentials" ? <AllCredentials setOpenMobileSidebar={setOpenMobileSidebar} />
-                            : currentMenu === "settings" ? <UserSettings setOpenMobileSidebar={setOpenMobileSidebar} /> : "Invalid Request"
+                    currentMenu === "dashboard" ? <Dashboard setOpenMobileSidebar={setOpenMobileSidebar} /> :
+                        currentMenu === "add-credential" ? <AddCredential setOpenMobileSidebar={setOpenMobileSidebar} />
+                            : currentMenu === "all-credentials" ? <AllCredentials setOpenMobileSidebar={setOpenMobileSidebar} />
+                                : currentMenu === "settings" ? <UserSettings setOpenMobileSidebar={setOpenMobileSidebar} /> : "Invalid Request"
                 }
             </main>
         </div>
