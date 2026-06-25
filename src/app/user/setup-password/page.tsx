@@ -13,7 +13,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-const Register = () => {
+const SetUpPassword = () => {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [showPass, setShowPass] = useState(false);
@@ -26,7 +26,7 @@ const Register = () => {
         try {
             setLoading(true);
 
-            const result = await axios.patch("/api/user/setup-password", {
+            const result = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/setup-password`, {
                 password,
             });
 
@@ -171,4 +171,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default SetUpPassword;
