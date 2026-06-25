@@ -12,7 +12,7 @@ const ResponsiveSearch = ({ searchTerm, setSearchTerm, placeholderText }: ISearc
     const [showMobileSearch, setShowMobileSearch] = useState(false);
 
     return (
-        <div className="w-full flex justify-center my-8 relative">
+        <div className="w-full flex justify-center my-8 relative px-4">
             <div className={`relative w-full sm:w-1/2 transition-all duration-300
         ${showMobileSearch ? "opacity-100" : "opacity-0 md:opacity-100"}`}
                 style={{ transitionProperty: "transform, opacity" }}
@@ -30,7 +30,7 @@ const ResponsiveSearch = ({ searchTerm, setSearchTerm, placeholderText }: ISearc
 
             <button
                 onClick={() => setShowMobileSearch(!showMobileSearch)}
-                className="md:hidden absolute right-0 flex items-center justify-center p-2 bg-green-500 text-white rounded-full z-20"
+                className="md:hidden absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center p-2 bg-green-500 text-white rounded-full z-20"
             >
                 <Search size={27} />
             </button>

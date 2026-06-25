@@ -1,7 +1,8 @@
-import { ICredType } from '@/types/credential.type';
+import { ICredential, ICredType } from '@/types/credential.type';
 import React, { useState } from 'react'
 import { CredentialType } from './AddCredential';
 import axios from 'axios';
+import { useCredentialStore } from '@/stores/credentials.store';
 
 type propsTypes = {
     setOpenVerifySaveModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,7 +17,8 @@ type propsTypes = {
 }
 
 const OpenVerifySaveModal = ({ setOpenVerifySaveModal, name, email, type, value, setName, setEmail, setType, setValue }: propsTypes) => {
-
+    const credentials = useCredentialStore((state) => state.credentials)
+    const setCredentials = useCredentialStore((state) => state.setCredentials)
     const [masterKey, setMasterKey] = useState<string>("")
     const [verifying, setVerifying] = useState<boolean>(false);
 
@@ -34,7 +36,7 @@ const OpenVerifySaveModal = ({ setOpenVerifySaveModal, name, email, type, value,
             if (result.status === 201) {
 
                 console.log(result)
-
+                setCredentials([...credentials, result.data.data])
                 setMasterKey("")
                 setName("")
                 setEmail("")

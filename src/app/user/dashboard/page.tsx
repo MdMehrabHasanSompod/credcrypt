@@ -19,7 +19,7 @@ const UserDashboard = () => {
             }
             <main className='flex-1 w-full  p-5'>
                 {
-                    currentMenu === "dashboard" ? <Dashboard setOpenMobileSidebar={setOpenMobileSidebar} /> :
+                    currentMenu === "dashboard" ? <Dashboard setOpenMobileSidebar={setOpenMobileSidebar} setCurrentMenu={setCurrentMenu} /> :
                         currentMenu === "add-credential" ? <AddCredential setOpenMobileSidebar={setOpenMobileSidebar} />
                             : currentMenu === "all-credentials" ? <AllCredentials setOpenMobileSidebar={setOpenMobileSidebar} />
                                 : currentMenu === "settings" ? <UserSettings setOpenMobileSidebar={setOpenMobileSidebar} /> : "Invalid Request"

@@ -1,3 +1,4 @@
+import { useCredentialStore } from "@/stores/credentials.store";
 import axios from "axios";
 import React, { useState } from "react";
 
@@ -31,6 +32,8 @@ const UpdateCredentialModal = ({
     masterKey,
     setUpdateCredentialModal,
 }: propsTypes) => {
+    const credentials = useCredentialStore((state) => state.credentials)
+    const setCredentials = useCredentialStore((state) => state.setCredentials)
     const [name, setName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [type, setType] = useState<CredentialType>("");
@@ -73,14 +76,15 @@ const UpdateCredentialModal = ({
             if (fields.type) payload.updatedType = type;
             if (fields.value) payload.updatedValue = value;
 
-            const result = await axios.patch(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/update-credential`,
+            const result = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/update-credential`,
                 payload
             );
 
             console.log(result);
 
             if (result.status === 200) {
+                const updatedCredentials = credentials.map((cred) => cred._id === credId ? result.data.data : cred)
+                setCredentials(updatedCredentials)
                 setUpdateCredentialModal(false);
             }
         } catch (error) {

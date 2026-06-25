@@ -3,13 +3,13 @@ import { create } from "zustand";
 
 
 interface credentialStore {
-    credentials: ICredential[] | null;
+    credentials: ICredential[];
     setCredentials: (credentials: ICredential[]) => void;
     clearCredentials: () => void;
 }
 
 export const useCredentialStore = create<credentialStore>((set) => ({
-    credentials: null,
+    credentials: [],
     setCredentials: (credentials) => set({ credentials }),
-    clearCredentials: () => set({ credentials: null }),
+    clearCredentials: () => set({ credentials: [] }),
 }));

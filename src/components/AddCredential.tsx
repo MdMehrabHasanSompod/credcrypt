@@ -5,11 +5,12 @@ import { useSession } from 'next-auth/react';
 import OpenVerifySaveModal from './OpenVerifySaveModal';
 import { ICredType } from '@/types/credential.type';
 
+
 type propType = {
     setOpenMobileSidebar: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export type CredentialType = "" | "password" | "pin" | "security-code" | "security-question" | "recovery-code" | "otp" | "session-token" | "api-key" | "others";
+export type CredentialType = "" | ICredType;
 
 
 const AddCredential = ({ setOpenMobileSidebar }: propType) => {
@@ -19,8 +20,6 @@ const AddCredential = ({ setOpenMobileSidebar }: propType) => {
     const [type, setType] = useState<CredentialType>("")
     const [value, setValue] = useState<string>("")
     const [openVerifySaveModal, setOpenVerifySaveModal] = useState<boolean>(false);
-
-
 
     const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault()

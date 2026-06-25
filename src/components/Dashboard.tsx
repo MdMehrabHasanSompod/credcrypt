@@ -1,153 +1,222 @@
-"use client"
-import React, { useState } from 'react'
-import { Heart, Loader2, MenuSquare, PlusCircle, } from 'lucide-react'
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import axios from 'axios';
+"use client";
+
+import React from "react";
+import {
+    Heart,
+    MenuSquare,
+    FolderLock,
+    KeyRound,
+    ShieldCheck,
+    Hash,
+    Eye,
+    PlusCircle,
+    Settings,
+    LifeBuoy,
+    Key,
+    HelpCircle,
+    BadgeCheck,
+    Fingerprint,
+} from "lucide-react";
+import { useUserStore } from "@/stores/user.store";
+import { useCredentialStore } from "@/stores/credentials.store";
+import StatsCard from "./StatsCard";
+import ActionCard from "./ActionCards";
+import { useRouter } from "next/navigation";
+
 
 type propType = {
-    setOpenMobileSidebar: React.Dispatch<React.SetStateAction<boolean>>
-}
+    setOpenMobileSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+    setCurrentMenu: React.Dispatch<React.SetStateAction<string>>;
+};
 
-type CredentialType = "" | "password" | "pin" | "security-code" | "security-question" | "recovery-code" | "otp" | "session-token" | "api-key" | "others";
+const Dashboard = ({ setOpenMobileSidebar, setCurrentMenu }: propType) => {
+    const user = useUserStore((state) => state.user)
+    const credentials = useCredentialStore((state) => state.credentials)
+    const router = useRouter();
+
+    const credCounts = credentials.reduce((prev, curr) => {
+        prev[curr.type] = (prev[curr.type] || 0) + 1;
+        return prev;
+    }, {} as Record<string, number>)
 
 
-const Dashboard = ({ setOpenMobileSidebar }: propType) => {
-    const session = useSession()
-    const router = useRouter()
-
-    const [name, setName] = useState<string>("")
-    const [email, setEmail] = useState<string>("")
-    const [type, setType] = useState<CredentialType>("")
-    const [value, setValue] = useState<string>("")
-    const [loading, setLoading] = useState<boolean>(false)
-
-    const handleSubmit = async (e: React.SubmitEvent) => {
-        e.preventDefault()
-        if (!type) {
-            alert("Please select a credential type!")
-            return;
-        }
-        if (!session?.data?.user.id) {
-            alert("Identified Suspicious Attempt")
-            return;
-        }
-        setLoading(true)
-        try {
-            const result = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/add-credential`, {
-                name,
-                email,
-                type,
-                value
-            })
-
-            console.log(result)
-
-            setName("")
-            setEmail("")
-            setType("")
-            setValue("")
-        } catch (error) {
-            console.error(error)
-        } finally {
-            setLoading(false)
-        }
-    }
 
     return (
-        <div className='w-full mx-auto overflow-x-hidden'>
-            <h1 className='text-xl md:text-2xl lg:text-3xl text-white font-semibold bg-green-900 w-full py-4 px-8 shadow-md rounded-md my-2 flex items-center justify-between gap-4'>
+        <div className="w-full overflow-x-hidden">
+            <h1 className="text-xl md:text-2xl lg:text-3xl text-white font-semibold bg-green-900 py-4 px-8 rounded-xl shadow-md flex items-center justify-between">
                 Dashboard
+
                 <MenuSquare
                     size={30}
-                    className='block lg:hidden cursor-pointer'
-                    onClick={() => setOpenMobileSidebar(prev => !prev)}
+                    className="lg:hidden cursor-pointer"
+                    onClick={() => setOpenMobileSidebar((prev) => !prev)}
                 />
             </h1>
-            <div className='flex flex-col items-center justify-center gap-4 mt-10'>
-                <p className='text-xl md:text-3xl font-semibold text-green-800 flex items-center justify-center gap-1'>
-                    Welcome Back <Heart size={40} fill='red' strokeWidth={0} />
+
+            <div className="flex flex-col items-center justify-center mt-12">
+
+                <p className="flex items-center gap-2 text-2xl md:text-3xl font-semibold text-green-800">
+                    Welcome Back
+                    <Heart fill="red" strokeWidth={0} size={34} />
                 </p>
-                <p className='text-2xl md:text-4xl font-bold text-green-900'>
-                    {session.data?.user.name}
-                </p>
+
+                <h2 className="mt-3 text-4xl md:text-5xl font-bold text-green-900">
+                    {user?.name}
+                </h2>
+
             </div>
 
-            <div className='flex flex-col md:flex-row justify-center gap-8 mt-10 md:mt-20 px-4'>
+            <div className="relative mt-12 overflow-hidden rounded-3xl bg-linear-to-r from-green-900 via-green-800 to-green-700 p-8 text-white shadow-xl">
 
-                <div className='flex-1 bg-white shadow-lg border border-gray-100 p-6 rounded-xl'>
-                    <h2 className='flex items-center justify-center gap-2 text-xl font-bold text-green-900 mb-4'>
-                        <PlusCircle /> Add New Credential
-                    </h2>
+                <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10" />
+                <div className="absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-white/5" />
 
-                    <form onSubmit={handleSubmit} className='space-y-4'>
+                <div className="relative flex flex-col lg:flex-row justify-between items-center gap-8">
 
-                        <input
-                            type="text"
-                            placeholder="Credential Name / Title"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            className='form-input'
-                            required
+                    <div>
+
+                        <p className="uppercase tracking-[4px] text-green-200 text-sm">
+                            Secure Vault
+                        </p>
+
+                        <h2 className="text-4xl font-bold mt-3">
+                            Everything Protected.
+                        </h2>
+
+                        <p className="mt-4 text-green-100 max-w-xl leading-7">
+                            Store passwords, API keys, recovery codes, security
+                            questions and every important credential securely in
+                            one place.
+                        </p>
+
+                    </div>
+
+                    <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8">
+
+                        <FolderLock
+                            size={90}
+                            className="text-white"
                         />
 
-                        <input
-                            type="email"
-                            placeholder="Connected Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className='form-input'
-                        />
+                    </div>
 
-                        <select
-                            value={type}
-                            onChange={(e) => setType(e.target.value as CredentialType)}
-                            className='form-select'
-                            required
-                        >
-                            <option className='select-option' value="">Select Credential Type</option>
-                            <option className='select-option' value="password">Password</option>
-                            <option className='select-option' value="pin">PIN</option>
-                            <option className='select-option' value="security-code">Security Code</option>
-                            <option className='select-option' value="security-question">Security Question</option>
-                            <option className='select-option' value="recovery-code">Recovery Code</option>
-                            <option className='select-option' value="otp">OTP</option>
-                            <option className='select-option' value="session-token">Session Token</option>
-                            <option className='select-option' value="api-key">API Key</option>
-                            <option className='select-option' value="others">Others</option>
-                        </select>
-
-                        <textarea
-                            placeholder="Enter credential value"
-                            value={value}
-                            onChange={(e) => setValue(e.target.value)}
-                            className='form-input min-h-30'
-                            required
-                        />
-
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className='w-full flex items-center justify-center gap-2 bg-green-800 hover:bg-green-900 text-white py-3 rounded-lg font-semibold transition cursor-pointer'
-                        >
-                            {loading && <Loader2 size={20} className="animate-spin" />}
-                            {loading ? "Saving" : "Save Credential"}
-                        </button>
-                    </form>
-                </div>
-
-                <div className='flex-1 bg-green-50 shadow-lg p-6 rounded-xl border border-green-100'>
-                    <h2 className='text-xl font-semibold text-gray-800'>
-                        Secure Vault Tips
-                    </h2>
-                    <p className='text-gray-600 mt-2'>
-                        Store sensitive credentials securely. Values will be encrypted before saving to database.
-                    </p>
                 </div>
 
             </div>
+
+            <h2 className="text-2xl font-bold text-green-900 mb-6 mt-10">
+                Statistics
+            </h2>
+
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 my-6">
+
+                <StatsCard
+                    title="Total"
+                    value={credentials.length}
+                    icon={<FolderLock size={28} />}
+                />
+
+                <StatsCard
+                    title="Passwords"
+                    value={credCounts["password"] ?? 0}
+                    icon={<KeyRound size={28} />}
+                />
+
+                <StatsCard
+                    title="API Keys"
+                    value={credCounts["api-key"] ?? 0}
+                    icon={<ShieldCheck size={28} />}
+                />
+
+                <StatsCard
+                    title="PINs"
+                    value={credCounts["pin"] ?? 0}
+                    icon={<Hash size={28} />}
+                />
+
+                <StatsCard
+                    title="Recovery Codes"
+                    value={credCounts["recovery-code"] ?? 0}
+                    icon={<Key size={28} />}
+                />
+
+                <StatsCard
+                    title="Security Questions"
+                    value={credCounts["security-question"] ?? 0}
+                    icon={<HelpCircle size={28} />}
+                />
+
+                <StatsCard
+                    title="Security Codes"
+                    value={credCounts["security-code"] ?? 0}
+                    icon={<BadgeCheck size={28} />}
+                />
+
+                <StatsCard
+                    title="Session Tokens"
+                    value={credCounts["session-token"] ?? 0}
+                    icon={<Fingerprint size={28} />}
+                />
+
+                <StatsCard
+                    title="OTPs"
+                    value={credCounts["otp"] ?? 0}
+                    icon={<ShieldCheck size={28} />}
+                />
+
+                <StatsCard
+                    title="Others"
+                    value={credCounts["others"] ?? 0}
+                    icon={<FolderLock size={28} />}
+                />
+
+            </div>
+
+
+            <div className="mt-14">
+
+                <h2 className="text-2xl font-bold text-green-900 mb-6">
+                    Quick Actions
+                </h2>
+
+                <div className="grid md:grid-cols-2 gap-6">
+
+                    <ActionCard
+                        onClick={() => setCurrentMenu("all-credentials")}
+                        title="View Credentials"
+                        subtitle="Browse every saved credential."
+                        icon={<Eye size={30} />}
+                    />
+
+                    <ActionCard
+                        onClick={() => setCurrentMenu("add-credential")}
+                        title="Add Credential"
+                        subtitle="Save a new credential."
+                        icon={<PlusCircle size={30} />}
+                    />
+
+                    <ActionCard
+                        onClick={() => setCurrentMenu("settings")}
+                        title="Manage Settings"
+                        subtitle="Security & preferences."
+                        icon={<Settings size={30} />}
+                    />
+
+                    <ActionCard
+                        onClick={() => router.push("/contact-support")}
+                        title="Contact Support"
+                        subtitle="Documentation & support."
+                        icon={<LifeBuoy size={30} />}
+                    />
+
+                </div>
+
+            </div>
+
         </div>
-    )
-}
+    );
+};
 
-export default Dashboard
+export default Dashboard;
+
+

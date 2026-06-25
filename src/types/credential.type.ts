@@ -30,3 +30,4 @@ export interface IDecryptedCredential {
     createdAt: Date;
     updatedAt: Date;
 }
+

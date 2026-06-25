@@ -1,3 +1,4 @@
+import { useCredentialStore } from "@/stores/credentials.store";
 import axios from "axios";
 import React, { useState } from "react";
 
@@ -17,6 +18,8 @@ const DeleteCredentialModal = ({
     const [step, setStep] = useState<1 | 2>(1);
     const [confirmationText, setConfirmationText] = useState("");
     const [loading, setLoading] = useState(false);
+    const credentials = useCredentialStore((state) => state.credentials)
+    const setCredentials = useCredentialStore((state) => state.setCredentials)
 
     const handleDelete = async () => {
         setLoading(true);
@@ -27,7 +30,13 @@ const DeleteCredentialModal = ({
                     credId
                 }
             })
-            setDeleteCredentialModal(false);
+
+            if (result.status === 200) {
+                const updatedCredentials = credentials.filter((cred) => cred._id !== credId)
+                setCredentials(updatedCredentials)
+                setDeleteCredentialModal(false);
+            }
+
         } catch (error) {
             console.log(error);
         } finally {
