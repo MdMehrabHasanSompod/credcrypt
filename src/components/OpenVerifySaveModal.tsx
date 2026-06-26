@@ -1,9 +1,9 @@
-import { ICredential, ICredType } from '@/types/credential.type';
+import { ICredType } from '@/types/credential.type';
 import React, { useState } from 'react'
 import { CredentialType } from './AddCredential';
 import axios from 'axios';
 import { useCredentialStore } from '@/stores/credentials.store';
-import { X, Shield, Key, Lock, Loader2, ArrowLeft, Eye, EyeOff, Save, CheckCircle } from 'lucide-react';
+import { X, Shield, Key, Lock, Loader2, ArrowLeft, Eye, EyeOff, Save } from 'lucide-react';
 
 type propsTypes = {
     setOpenVerifySaveModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -36,8 +36,6 @@ const OpenVerifySaveModal = ({ setOpenVerifySaveModal, name, email, type, value,
             })
 
             if (result.status === 201) {
-
-                console.log(result)
                 setCredentials([...credentials, result.data.data])
                 setMasterKey("")
                 setName("")

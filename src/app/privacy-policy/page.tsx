@@ -1,7 +1,6 @@
 "use client"
 import React from 'react'
 import { Shield, Lock, Key, Database, Server, Mail, Clock, CheckCircle, AlertTriangle, Scale } from 'lucide-react'
-import Image from 'next/image'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 

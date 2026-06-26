@@ -1,5 +1,4 @@
 "use client"
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRef, useState } from 'react'
 import { useUserStore } from '@/stores/user.store'
@@ -32,7 +31,6 @@ const Homepage = () => {
     const user = useUserStore((state) => state.user)
     const featuresRef = useRef<HTMLDivElement>(null)
     const aboutRef = useRef<HTMLDivElement>(null)
-    const [imageError, setImageError] = useState(false)
 
     const scrollToFeatures = () => {
         featuresRef.current?.scrollIntoView({ behavior: 'smooth' })

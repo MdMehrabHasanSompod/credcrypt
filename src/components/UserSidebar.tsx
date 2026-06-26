@@ -1,26 +1,17 @@
 "use client"
 import { DashboardMenu, useDashboardStore, useToggleSidebarStore } from '@/stores/dashboardMenu.store'
 import { useUserStore } from '@/stores/user.store'
-import { LayoutDashboard, LogOut, PanelLeft, PlusCircle, Settings, Shield, Key, User, LucideIcon } from 'lucide-react'
+import { LayoutDashboard, LogOut, PanelLeft, PlusCircle, Settings, Shield, User, LucideIcon } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 const UserSidebar = () => {
     const user = useUserStore((state) => state.user)
     const { setCurrentMenu } = useDashboardStore()
     const { toggleSidebar, setToggleSidebar } = useToggleSidebarStore()
-    const [showText, setShowText] = useState<boolean>(true)
     const router = useRouter()
-
-    useEffect(() => {
-        if (toggleSidebar) {
-            setTimeout(() => setShowText(false), 200);
-        } else {
-            setTimeout(() => setShowText(true), 200);
-        }
-    }, [toggleSidebar]);
 
     interface IMenuItem {
         id: DashboardMenu;

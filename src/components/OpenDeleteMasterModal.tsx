@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { X, Shield, Key, Lock, Loader2, ArrowLeft, Eye, EyeOff, Trash2, AlertTriangle } from 'lucide-react'
+import { X, Shield, Key, Loader2, ArrowLeft, Eye, EyeOff, Trash2, AlertTriangle } from 'lucide-react'
 
 type propsTypes = {
     masterKey: string;

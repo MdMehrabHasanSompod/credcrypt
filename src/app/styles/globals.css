@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 .form-input {
-    @apply w-full px-4 py-3 pr-12 rounded-lg border-2 border-gray-300 focus:border-green-500 outline-none transition text-sm sm:text-base
+    @apply w-full pl-11 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700
 }
 
 

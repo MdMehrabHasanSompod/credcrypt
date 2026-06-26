@@ -60,7 +60,7 @@ export const POST = async (request: NextRequest) => {
 
         return NextResponse.json({
             success: true, message: "User registered successfully. Please login to continue", newUser
-        }, { status: 200 })
+        }, { status: 201 })
 
     } catch (error) {
         return NextResponse.json(

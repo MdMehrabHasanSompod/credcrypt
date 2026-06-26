@@ -41,9 +41,11 @@ const setMasterKey = () => {
         try {
             setConfirming(true);
 
-            await axios.patch("/api/user/confirm-master-key");
+            const result = await axios.patch("/api/user/confirm-master-key");
+            if (result.status === 200) {
+                router.push("/user/dashboard");
+            }
 
-            router.push("/user/dashboard");
         } catch (error) {
             console.log(error);
         } finally {

@@ -9,7 +9,7 @@ import AddCredential from '@/components/AddCredential'
 import { useDashboardStore } from '@/stores/dashboardMenu.store'
 
 const UserDashboard = () => {
-    const { currentMenu, setCurrentMenu } = useDashboardStore()
+    const { currentMenu } = useDashboardStore()
     const [openMobileSidebar, setOpenMobileSidebar] = useState(false)
 
     return (

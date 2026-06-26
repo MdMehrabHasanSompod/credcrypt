@@ -1,11 +1,12 @@
 "use client";
 import { assets } from '@/assets/assets'
-import { ArrowLeft, Eye, EyeOff, Loader2, Mail, Key, Shield, Lock, AlertCircle, CheckCircle } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Loader2, Mail, Key, Shield, } from "lucide-react";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { FormEvent, useState } from "react";
+import React, { useState } from "react";
+
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -13,10 +14,8 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const [showPass, setShowPass] = useState(false);
     const router = useRouter();
-    const session = useSession();
-    console.log(session);
 
-    const submitHandler = async (e: FormEvent) => {
+    const submitHandler = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             setLoading(true);
@@ -25,18 +24,16 @@ const Login = () => {
                 password,
                 redirect: false
             })
-            console.log(result);
+
             if (result?.ok) {
                 router.push("/api/auth/post-login");
+                setEmail("");
+                setPassword("");
             }
-            setEmail("");
-            setPassword("");
-            setLoading(false);
         } catch (error) {
-            console.log(error);
-            setEmail("");
-            setPassword("");
-            setLoading(false);
+            console.log(error)
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -70,7 +67,7 @@ const Login = () => {
                             <input
                                 type="email"
                                 placeholder="Email Address"
-                                className="w-full pl-11 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700"
+                                className="form-input"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
@@ -82,7 +79,7 @@ const Login = () => {
                             <input
                                 type={showPass ? "text" : "password"}
                                 placeholder="Password"
-                                className="w-full pl-11 pr-12 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700"
+                                className="form-input"
                                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$"
                                 required
                                 value={password}

@@ -6,7 +6,7 @@ import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { FormEvent, useState } from "react";
+import React, { useState } from "react";
 
 const Register = () => {
     const [name, setName] = useState("");
@@ -28,20 +28,19 @@ const Register = () => {
                 phone,
                 password,
             });
-            console.log(result);
-            setName("");
-            setEmail("");
-            setPassword("");
-            setPhone("");
-            setLoading(false);
-            router.push("/login")
+            if (result.status === 201) {
+                router.push("/login")
+                setName("");
+                setEmail("");
+                setPassword("");
+                setPhone("");
+            }
         } catch (error) {
             console.log(error);
-            setName("");
-            setEmail("");
-            setPassword("");
-            setPhone("");
-            setLoading(false);
+        } finally {
+            {
+                setLoading(false)
+            }
         }
     };
 
@@ -75,7 +74,7 @@ const Register = () => {
                             <input
                                 type="text"
                                 placeholder="Full Name"
-                                className="w-full pl-11 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700"
+                                className="form-input"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 required
@@ -87,7 +86,7 @@ const Register = () => {
                             <input
                                 type="email"
                                 placeholder="Email Address"
-                                className="w-full pl-11 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700"
+                                className="form-input"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
@@ -99,7 +98,7 @@ const Register = () => {
                             <input
                                 type="tel"
                                 placeholder="Phone Number"
-                                className="w-full pl-11 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700"
+                                className="form-input"
                                 value={phone}
                                 minLength={11}
                                 maxLength={13}
@@ -121,7 +120,7 @@ const Register = () => {
                             <input
                                 type={showPass ? "text" : "password"}
                                 placeholder="Password"
-                                className="w-full pl-11 pr-12 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700"
+                                className="form-input"
                                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$"
                                 required
                                 value={password}

@@ -87,10 +87,12 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
                     selectedCredId
                 }
             );
-            setSelectedCredential(result.data.data);
-            setOpenViewMasterModal(false);
-            setMasterKey("");
-            setOpenUnlockedCredModal(true);
+            if (result.status === 200) {
+                setSelectedCredential(result.data.data);
+                setOpenViewMasterModal(false);
+                setMasterKey("");
+                setOpenUnlockedCredModal(true);
+            }
         } catch (error) {
             console.log(error);
         } finally {

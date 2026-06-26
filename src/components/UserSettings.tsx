@@ -2,7 +2,7 @@
 
 import { useUserStore } from '@/stores/user.store';
 import axios from 'axios';
-import { Loader2, LogOut, MenuSquare, Settings, Trash2, User, Wrench, Mail, Phone, Calendar, UserCircle, Camera, X, Shield, Key, UserPlus } from 'lucide-react'
+import { Loader2, LogOut, MenuSquare, Settings, Trash2, User, Wrench, Mail, Phone, Calendar, UserCircle, Camera, Shield, Key, UserPlus } from 'lucide-react'
 import { signOut } from 'next-auth/react';
 import Image from 'next/image'
 import { useRouter } from 'next/navigation';
@@ -59,8 +59,6 @@ const UserSettings = ({ setOpenMobileSidebar }: propType) => {
 
             const result = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/update-user`, formData)
 
-            console.log(result);
-
             if (result.data.success) {
                 setUser(result.data.updatedUser)
                 setUpdatedName(result.data.updatedUser.name || "");
@@ -68,15 +66,14 @@ const UserSettings = ({ setOpenMobileSidebar }: propType) => {
                 setDisplayUpdatedAvatar(result.data.updatedUser.avatar || undefined);
                 setUpdatedAvatar(null);
                 setRemoveAvatar(false);
+                setUpdateProfile(false)
             }
-
-            setUpdateLoading(false)
-            setUpdateProfile(false)
 
 
         } catch (error) {
-            setUpdateLoading(false)
             console.log(error);
+        } finally {
+            setUpdateLoading(false)
         }
     }
 

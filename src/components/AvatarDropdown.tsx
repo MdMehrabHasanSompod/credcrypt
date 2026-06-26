@@ -2,12 +2,11 @@
 import { useState, useRef, useEffect } from "react";
 import { LogOut, User } from "lucide-react";
 import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { IUser } from "@/types/user.type";
 import getAvatar from "../utils/getAvatar";
 
 export default function AvatarDropdown({ user }: { user: IUser }) {
-    const session = useSession()
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const avatar = getAvatar(user)

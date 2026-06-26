@@ -81,8 +81,6 @@ const UpdateCredentialModal = ({
                 payload
             );
 
-            console.log(result);
-
             if (result.status === 200) {
                 const updatedCredentials = credentials.map((cred) => cred._id === credId ? result.data.data : cred)
                 setCredentials(updatedCredentials)
