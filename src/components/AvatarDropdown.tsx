@@ -53,12 +53,6 @@ export default function AvatarDropdown({ user }: { user: IUser }) {
                     >
                         Dashboard
                     </Link>
-                    <Link
-                        href="/helpline"
-                        className="block px-4 py-2 text-green-700 hover:bg-green-100 "
-                    >
-                        Helpline
-                    </Link>
                     <button
                         className="w-full text-left px-4 py-2 flex items-center justify-between gap-1 text-red-600 cursor-pointer hover:bg-red-100"
                         onClick={() => signOut()}

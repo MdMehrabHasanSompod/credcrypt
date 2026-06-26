@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
 import { useUserStore } from '@/stores/user.store'
-import { MenuSquare, X, LogOut, LayoutDashboard, Phone } from 'lucide-react'
+import { MenuSquare, X, LogOut, LayoutDashboard, Phone, ClipboardPen } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import AvatarDropdown from './AvatarDropdown'
 import { useRouter } from 'next/navigation'
@@ -33,8 +33,8 @@ const Navbar = () => {
                 </Link>
 
                 <div className='text-white font-semibold text-base md:text-lg hidden md:flex items-center justify-between gap-6'>
-                    <Link href="/services" className="hover:text-green-300 transition-colors duration-200">Services</Link>
-                    <Link href="/about" className="hover:text-green-300 transition-colors duration-200">About</Link>
+                    <Link href="/privacy-policy" className="hover:text-green-300 transition-colors duration-200">Privacy</Link>
+                    <Link href="/contact-support" className="hover:text-green-300 transition-colors duration-200">Helpline</Link>
                     {
                         !user ? (
                             <Link href="/login" className="bg-green-600 hover:bg-green-700 px-5 py-2 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl">
@@ -78,18 +78,18 @@ const Navbar = () => {
                             {!user ? (
                                 <>
                                     <Link
-                                        href="/services"
+                                        href="/privacy-policy"
                                         className="block text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl transition-all duration-200 text-base font-medium"
                                         onClick={() => setMobileMenuOpen(false)}
                                     >
-                                        Services
+                                        Privacy
                                     </Link>
                                     <Link
-                                        href="/about"
+                                        href="/contact-support"
                                         className="block text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl transition-all duration-200 text-base font-medium"
                                         onClick={() => setMobileMenuOpen(false)}
                                     >
-                                        About
+                                        Helpline
                                     </Link>
                                     <div className="pt-4 border-t border-green-700/50">
                                         <Link
@@ -120,14 +120,8 @@ const Navbar = () => {
                                             className="flex items-center gap-3 text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl transition-all duration-200 text-base font-medium"
                                             onClick={() => setMobileMenuOpen(false)}
                                         >
-                                            Services
-                                        </Link>
-                                        <Link
-                                            href="/about"
-                                            className="flex items-center gap-3 text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl transition-all duration-200 text-base font-medium"
-                                            onClick={() => setMobileMenuOpen(false)}
-                                        >
-                                            About
+                                            <ClipboardPen className='w-5 h-5 text-blue-400' />
+                                            Privacy-Policy
                                         </Link>
                                         <Link
                                             href="/user/dashboard"
@@ -138,7 +132,7 @@ const Navbar = () => {
                                             Dashboard
                                         </Link>
                                         <Link
-                                            href="/helpline"
+                                            href="/contact-support"
                                             className="flex items-center gap-3 text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl transition-all duration-200 text-base font-medium"
                                             onClick={() => setMobileMenuOpen(false)}
                                         >
