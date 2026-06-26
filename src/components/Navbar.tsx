@@ -116,7 +116,7 @@ const Navbar = () => {
 
                                     <div className="space-y-1">
                                         <Link
-                                            href="/services"
+                                            href="/privacy-policy"
                                             className="flex items-center gap-3 text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl transition-all duration-200 text-base font-medium"
                                             onClick={() => setMobileMenuOpen(false)}
                                         >

@@ -122,19 +122,9 @@ const Login = () => {
                         </div>
 
                         <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                                <input
-                                    type="checkbox"
-                                    id="remember"
-                                    className="w-4 h-4 rounded border-gray-300 accent-green-600 cursor-pointer"
-                                />
-                                <label htmlFor="remember" className="text-sm text-gray-600 cursor-pointer">
-                                    Remember me
-                                </label>
-                            </div>
                             <button
                                 type="button"
-                                onClick={() => router.push("/forgot-password")}
+                                onClick={() => router.push("/contact-support")}
                                 className="text-sm text-red-600 hover:text-red-700 cursor-pointer hover:underline transition-all duration-200 font-medium"
                             >
                                 Forgot password?

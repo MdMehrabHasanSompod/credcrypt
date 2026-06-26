@@ -197,7 +197,7 @@ const Register = () => {
 
                         <label className="flex items-start gap-3 text-sm text-gray-600">
                             <input type="checkbox" className="mt-0.5 cursor-pointer accent-green-600 w-4 h-4 rounded border-gray-300" required />
-                            <span>I agree to the <span className="text-green-600 font-medium">Terms</span> & <span className="text-green-600 font-medium">Privacy Policy</span></span>
+                            <span>I agree to the <span className="text-green-600 font-medium" onClick={() => router.push("/privacy-policy")}>Terms</span> & <span onClick={() => router.push("/privacy-policy")} className="text-green-600 font-medium">Privacy Policy</span></span>
                         </label>
 
                         <button

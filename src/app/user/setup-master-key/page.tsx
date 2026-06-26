@@ -61,7 +61,7 @@ const setMasterKey = () => {
                 </h1>
 
                 <p className="text-center text-sm text-gray-500 mt-2">
-                    This master key is available for only <b>this time</b>. After that you <b>can't accees</b> it.
+                    Do not refresh this page before saving. This master key is available for only <b>this time</b>. After that you <b>can't accees</b> it.
                     Without this key, you can't create or access your credentials. Save it wisely.
                     If you lose it, you can recover it by contacting support.
                 </p>
