@@ -9,11 +9,6 @@ export const GET = async () => {
     try {
         const session = await auth()
 
-        if (session?.user) {
-            console.log("User:", session.user);
-            console.log("User ID:", session.user.id);
-        }
-
         if (!session?.user.id) {
             return NextResponse.json(
                 { success: false, message: "Problem to Unauthorized Access" },
