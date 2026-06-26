@@ -1,21 +1,30 @@
 "use client"
-import { Home, LayoutDashboard, LogOut, PlusCircle, Settings, Shield, X, Key, User } from 'lucide-react'
+import { Home, LayoutDashboard, LogOut, PlusCircle, Settings, Shield, X, Key, User, LucideIcon } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useUserStore } from '@/stores/user.store'
 import Image from 'next/image'
+import { DashboardMenu, useDashboardStore } from '@/stores/dashboardMenu.store'
 
 type propType = {
-    setCurrentMenu: React.Dispatch<React.SetStateAction<string>>;
     setOpenMobileSidebar: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const UserMobileSidebar = ({ setCurrentMenu, setOpenMobileSidebar }: propType) => {
+const UserMobileSidebar = ({ setOpenMobileSidebar }: propType) => {
+    const { setCurrentMenu } = useDashboardStore()
     const user = useUserStore((state) => state.user)
     const router = useRouter()
 
-    const menuItems = [
+    interface IMenuItem {
+        id: DashboardMenu;
+        label: string;
+        icon: LucideIcon;
+        color: string;
+    }
+
+
+    const menuItems: IMenuItem[] = [
         { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, color: "text-blue-400" },
         { id: "add-credential", label: "Add Credential", icon: PlusCircle, color: "text-green-400" },
         { id: "all-credentials", label: "All Credentials", icon: Shield, color: "text-purple-400" },

@@ -23,14 +23,15 @@ import { useCredentialStore } from "@/stores/credentials.store";
 import StatsCard from "./StatsCard";
 import ActionCard from "./ActionCards";
 import { useRouter } from "next/navigation";
+import { useDashboardStore } from "@/stores/dashboardMenu.store";
 
 
 type propType = {
     setOpenMobileSidebar: React.Dispatch<React.SetStateAction<boolean>>;
-    setCurrentMenu: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const Dashboard = ({ setOpenMobileSidebar, setCurrentMenu }: propType) => {
+const Dashboard = ({ setOpenMobileSidebar }: propType) => {
+    const { setCurrentMenu } = useDashboardStore()
     const user = useUserStore((state) => state.user)
     const credentials = useCredentialStore((state) => state.credentials)
     const router = useRouter();

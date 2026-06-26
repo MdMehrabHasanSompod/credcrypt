@@ -1,17 +1,15 @@
 "use client"
+import { DashboardMenu, useDashboardStore } from '@/stores/dashboardMenu.store'
 import { useUserStore } from '@/stores/user.store'
-import { LayoutDashboard, LogOut, PanelLeft, PlusCircle, Settings, Shield, Key, User } from 'lucide-react'
+import { LayoutDashboard, LogOut, PanelLeft, PlusCircle, Settings, Shield, Key, User, LucideIcon } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
-type propType = {
-    setCurrentMenu: React.Dispatch<React.SetStateAction<string>>
-}
-
-const UserSidebar = ({ setCurrentMenu }: propType) => {
+const UserSidebar = () => {
     const user = useUserStore((state) => state.user)
+    const { setCurrentMenu } = useDashboardStore()
     const [toggleSidebar, setToggleSidebar] = useState<boolean>(false)
     const [showText, setShowText] = useState<boolean>(true)
     const router = useRouter()
@@ -24,7 +22,14 @@ const UserSidebar = ({ setCurrentMenu }: propType) => {
         }
     }, [toggleSidebar]);
 
-    const menuItems = [
+    interface IMenuItem {
+        id: DashboardMenu;
+        label: string;
+        icon: LucideIcon;
+        color: string;
+    }
+
+    const menuItems: IMenuItem[] = [
         { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, color: "text-blue-400" },
         { id: "add-credential", label: "Add Credential", icon: PlusCircle, color: "text-green-400" },
         { id: "all-credentials", label: "All Credentials", icon: Shield, color: "text-purple-400" },
