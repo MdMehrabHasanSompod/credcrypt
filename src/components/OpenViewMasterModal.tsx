@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { X, Shield, Key, Lock, Loader2, ArrowLeft, Eye, EyeOff, Unlock } from 'lucide-react'
 
 type propsTypes = {
     masterKey: string;
@@ -15,42 +16,95 @@ const OpenViewMasterModal = ({
     revealCredential,
     verifying
 }: propsTypes) => {
+    const [showKey, setShowKey] = useState<boolean>(false);
+
     return (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-4">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 px-4 animate-in fade-in zoom-in duration-200">
 
-            <div className="w-full max-w-sm sm:max-w-md bg-white rounded-xl p-5 sm:p-6 shadow-xl relative">
+            <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden">
 
-                <h2 className="text-lg sm:text-xl font-semibold mb-4 text-center">
-                    Verify Master Key
-                </h2>
-
-                <input
-                    type="password"
-                    value={masterKey}
-                    onChange={(e) => setMasterKey(e.target.value)}
-                    placeholder="Master Key"
-                    className="w-full px-3 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 text-sm sm:text-base"
-                />
-
-                <div className="flex flex-col sm:flex-row justify-end gap-3 mt-5">
-
+                <div className="bg-linear-to-r from-green-700 to-green-600 px-6 py-4 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                        <div className="bg-white/20 p-2 rounded-xl">
+                            <Shield className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                            <h2 className="text-xl font-bold text-white">
+                                Verify Master Key
+                            </h2>
+                            <p className="text-xs text-green-100">
+                                Enter your master key to unlock
+                            </p>
+                        </div>
+                    </div>
                     <button
                         onClick={() => setOpenViewMasterModal(false)}
-                        className="w-full cursor-pointer sm:w-auto px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition text-sm sm:text-base"
+                        className="text-white/80 hover:text-white hover:bg-white/20 p-2 rounded-lg transition-all duration-200"
                     >
-                        Cancel
+                        <X className="w-5 h-5" />
                     </button>
-
-                    <button
-                        onClick={revealCredential}
-                        disabled={verifying}
-                        className="w-full sm:w-auto cursor-pointer px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-green-400 disabled:cursor-not-allowed transition flex items-center justify-center gap-2 text-sm sm:text-base"
-                    >
-                        {verifying ? "Verifying..." : "Unlock"}
-                    </button>
-
                 </div>
 
+                <div className="p-6">
+                    <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-xl border border-blue-200 mb-6">
+                        <Lock className="w-5 h-5 text-blue-600 shrink-0" />
+                        <p className="text-sm text-blue-800">
+                            Enter your master key to view the credential value
+                        </p>
+                    </div>
+
+                    <div className="relative">
+                        <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <input
+                            type={showKey ? "text" : "password"}
+                            value={masterKey}
+                            onChange={(e) => setMasterKey(e.target.value)}
+                            placeholder="Enter your master key"
+                            className="w-full pl-11 pr-12 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700"
+                            autoFocus
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' && !verifying) {
+                                    revealCredential();
+                                }
+                            }}
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowKey(!showKey)}
+                            className="absolute cursor-pointer right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                        >
+                            {showKey ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                        </button>
+                    </div>
+
+                    <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 mt-6">
+                        <button
+                            onClick={() => setOpenViewMasterModal(false)}
+                            className="w-full cursor-pointer sm:w-auto px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2"
+                        >
+                            <ArrowLeft className="w-4 h-4" />
+                            Cancel
+                        </button>
+
+                        <button
+                            onClick={revealCredential}
+                            disabled={verifying || !masterKey.trim()}
+                            className="w-full cursor-pointer sm:w-auto px-6 py-2.5 bg-linear-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-medium rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        >
+                            {verifying ? (
+                                <>
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                    Verifying...
+                                </>
+                            ) : (
+                                <>
+                                    <Unlock className="w-4 h-4" />
+                                    Unlock Credential
+                                </>
+                            )}
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     )

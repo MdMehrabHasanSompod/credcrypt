@@ -93,7 +93,7 @@ const SetUpPassword = () => {
                                 <input
                                     type={showPass ? "text" : "password"}
                                     placeholder="Enter your password"
-                                    className="form-input pl-10!"
+                                    className="w-full pl-11 pr-12 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700"
                                     pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$"
                                     required
                                     value={password}

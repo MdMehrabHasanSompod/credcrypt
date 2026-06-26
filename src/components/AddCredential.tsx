@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react'
-import { MenuSquare, PlusCircle, } from 'lucide-react'
+import { MenuSquare, PlusCircle, Lock, AlertCircle, Sparkles } from 'lucide-react'
 import { useSession } from 'next-auth/react';
 import OpenVerifySaveModal from './OpenVerifySaveModal';
 import { ICredType } from '@/types/credential.type';
@@ -36,84 +36,205 @@ const AddCredential = ({ setOpenMobileSidebar }: propType) => {
 
     return (
         <div className='w-full mx-auto overflow-x-hidden'>
-            <h1 className='text-xl md:text-2xl lg:text-3xl text-white font-semibold bg-green-900 w-full py-4 px-8 shadow-md rounded-md my-2 flex items-center justify-between gap-4'>
-                Add Credential
-                <MenuSquare
-                    size={30}
-                    className='block lg:hidden cursor-pointer'
+            <div className='bg-linear-to-r from-green-800 to-green-600 w-full py-4 px-6 md:px-8 shadow-lg rounded-xl my-2 flex items-center justify-between gap-4'>
+                <h1 className='text-xl md:text-2xl lg:text-3xl text-white font-bold flex items-center gap-3'>
+                    <PlusCircle className='w-6 h-6 md:w-7 md:h-7' />
+                    Add Credential
+                </h1>
+                <button
                     onClick={() => setOpenMobileSidebar(prev => !prev)}
-                />
-            </h1>
-            <div className='flex flex-col md:flex-row justify-center gap-8 mt-10 md:mt-20 px-4'>
+                    className='lg:hidden text-white hover:bg-green-700 p-2 rounded-lg transition-all duration-200'
+                >
+                    <MenuSquare size={28} />
+                </button>
+            </div>
 
-                <div className='flex-1 bg-white shadow-lg border border-gray-100 p-6 rounded-xl'>
-                    <h2 className='flex items-center justify-center gap-2 text-xl font-bold text-green-900 mb-4'>
-                        <PlusCircle /> Add New Credential
-                    </h2>
+            <div className='grid grid-cols-1 lg:grid-cols-5 gap-8 mt-8 px-4'>
+                <div className='lg:col-span-3'>
+                    <div className='bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden'>
+                        <div className='bg-linear-to-r from-green-50 to-emerald-50 px-6 py-4 border-b border-gray-100'>
+                            <h2 className='flex items-center gap-2 text-xl font-bold text-green-900'>
+                                <PlusCircle className='w-5 h-5' />
+                                Add New Credential
+                            </h2>
+                            <p className='text-sm text-gray-600 mt-1'>Store your sensitive information securely</p>
+                        </div>
 
-                    <form onSubmit={handleSubmit} className='space-y-4'>
+                        <form onSubmit={handleSubmit} className='p-6 space-y-5'>
+                            <div>
+                                <label className='block text-sm font-medium text-gray-700 mb-2'>
+                                    Credential Name <span className='text-red-500'>*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder="e.g., Gmail Account, GitHub Token"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    className='w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700'
+                                    required
+                                />
+                            </div>
 
-                        <input
-                            type="text"
-                            placeholder="Credential Name / Title"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            className='form-input'
-                            required
-                        />
+                            <div>
+                                <label className='block text-sm font-medium text-gray-700 mb-2'>
+                                    Connected Email <span className='text-red-500'>*</span>
+                                </label>
+                                <input
+                                    type="email"
+                                    placeholder="Enter associated email address"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                    className='w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700'
+                                />
+                            </div>
 
-                        <input
-                            type="email"
-                            placeholder="Connected Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className='form-input'
-                        />
+                            <div>
+                                <label className='block text-sm font-medium text-gray-700 mb-2'>
+                                    Credential Type <span className='text-red-500'>*</span>
+                                </label>
+                                <select
+                                    value={type}
+                                    onChange={(e) => setType(e.target.value as CredentialType)}
+                                    className='w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700 bg-white appearance-none cursor-pointer'
+                                    required
+                                >
+                                    <option className='select-option' value="">Select Credential Type</option>
+                                    <option className='select-option' value="password">🔑 Password</option>
+                                    <option className='select-option' value="pin">🔢 PIN</option>
+                                    <option className='select-option' value="security-code">🛡️ Security Code</option>
+                                    <option className='select-option' value="security-question">❓ Security Question</option>
+                                    <option className='select-option' value="recovery-code">🔄 Recovery Code</option>
+                                    <option className='select-option' value="otp">📱 OTP</option>
+                                    <option className='select-option' value="session-token">🍪 Session Token</option>
+                                    <option className='select-option' value="api-key">🔌 API Key</option>
+                                    <option className='select-option' value="others">📦 Others</option>
+                                </select>
+                            </div>
 
-                        <select
-                            value={type}
-                            onChange={(e) => setType(e.target.value as CredentialType)}
-                            className='form-select'
-                            required
-                        >
-                            <option className='select-option' value="">Select Credential Type</option>
-                            <option className='select-option' value="password">Password</option>
-                            <option className='select-option' value="pin">PIN</option>
-                            <option className='select-option' value="security-code">Security Code</option>
-                            <option className='select-option' value="security-question">Security Question</option>
-                            <option className='select-option' value="recovery-code">Recovery Code</option>
-                            <option className='select-option' value="otp">OTP</option>
-                            <option className='select-option' value="session-token">Session Token</option>
-                            <option className='select-option' value="api-key">API Key</option>
-                            <option className='select-option' value="others">Others</option>
-                        </select>
+                            <div>
+                                <label className='block text-sm font-medium text-gray-700 mb-2'>
+                                    Credential Value <span className='text-red-500'>*</span>
+                                </label>
+                                <textarea
+                                    placeholder="Enter the credential value"
+                                    value={value}
+                                    onChange={(e) => setValue(e.target.value)}
+                                    className='w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700 min-h-30 resize-y'
+                                    required
+                                />
+                                <p className='text-xs text-gray-500 mt-2 flex items-center gap-1'>
+                                    <Lock className='w-3 h-3' />
+                                    This value will be encrypted before saving
+                                </p>
+                            </div>
 
-                        <textarea
-                            placeholder="Enter credential value"
-                            value={value}
-                            onChange={(e) => setValue(e.target.value)}
-                            className='form-input min-h-30'
-                            required
-                        />
-
-                        <button
-                            type='submit'
-                            className='w-full flex items-center justify-center gap-2 bg-green-800 hover:bg-green-900 text-white py-3 rounded-lg font-semibold transition cursor-pointer'
-                        >
-                            Save Credential
-                        </button>
-                    </form>
+                            <button
+                                type='submit'
+                                className='w-full cursor-pointer bg-linear-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-3.5 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-lg'
+                            >
+                                Save Credential
+                            </button>
+                        </form>
+                    </div>
                 </div>
 
-                <div className='flex-1 bg-green-50 shadow-lg p-6 rounded-xl border border-green-100'>
-                    <h2 className='text-xl font-semibold text-gray-800'>
-                        Secure Vault Tips
-                    </h2>
-                    <p className='text-gray-600 mt-2'>
-                        Store sensitive credentials securely. Values will be encrypted before saving to database.
-                    </p>
-                </div>
+                <div className='lg:col-span-2'>
+                    <div className='bg-linear-to-br from-green-50 to-emerald-50 rounded-2xl border border-green-100 shadow-lg p-6 sticky top-6'>
+                        <div className='flex items-center gap-2 mb-4'>
+                            <Sparkles className='w-5 h-5 text-green-600' />
+                            <h2 className="text-xl font-semibold text-green-900">
+                                Secure Vault Tips
+                            </h2>
+                        </div>
 
+                        <p className="text-sm text-gray-600 mb-6">
+                            Everything stored here is encrypted before being saved.
+                        </p>
+
+                        <div className="space-y-3.5">
+                            <div className="flex gap-3 items-start group hover:bg-white/50 p-2 rounded-lg transition-all duration-200">
+                                <div className="mt-1 h-2 w-2 rounded-full bg-green-500 group-hover:bg-green-600 transition-colors duration-200 shrink-0" />
+                                <p className="text-sm text-gray-700">
+                                    Use unique name for every credential.
+                                </p>
+                            </div>
+
+                            <div className="flex gap-3 items-start group hover:bg-white/50 p-2 rounded-lg transition-all duration-200">
+                                <div className="mt-1 h-2 w-2 rounded-full bg-green-500 group-hover:bg-green-600 transition-colors duration-200 shrink-0" />
+                                <p className="text-sm text-gray-700">
+                                    Never share your master key & password with others.
+                                </p>
+                            </div>
+
+                            <div className="flex gap-3 items-start group hover:bg-white/50 p-2 rounded-lg transition-all duration-200">
+                                <div className="mt-1 h-2 w-2 rounded-full bg-green-500 group-hover:bg-green-600 transition-colors duration-200 shrink-0" />
+                                <p className="text-sm text-gray-700">
+                                    Verify before saving sensitive credentials.
+                                </p>
+                            </div>
+
+                            <div className="flex gap-3 items-start group hover:bg-white/50 p-2 rounded-lg transition-all duration-200">
+                                <div className="mt-1 h-2 w-2 rounded-full bg-green-500 group-hover:bg-green-600 transition-colors duration-200 shrink-0" />
+                                <p className="text-sm text-gray-700">
+                                    Store sensitive data without hesitation.
+                                </p>
+                            </div>
+
+                            <div className="flex gap-3 items-start group hover:bg-white/50 p-2 rounded-lg transition-all duration-200">
+                                <div className="mt-1 h-2 w-2 rounded-full bg-green-500 group-hover:bg-green-600 transition-colors duration-200 shrink-0" />
+                                <p className="text-sm text-gray-700">
+                                    Always select the right credential type.
+                                </p>
+                            </div>
+
+                            <div className="flex gap-3 items-start group hover:bg-white/50 p-2 rounded-lg transition-all duration-200">
+                                <div className="mt-1 h-2 w-2 rounded-full bg-green-500 group-hover:bg-green-600 transition-colors duration-200 shrink-0" />
+                                <p className="text-sm text-gray-700">
+                                    Values will be completely encrypted before saving into database.
+                                </p>
+                            </div>
+
+                            <div className="flex gap-3 items-start group hover:bg-white/50 p-2 rounded-lg transition-all duration-200">
+                                <div className="mt-1 h-2 w-2 rounded-full bg-green-500 group-hover:bg-green-600 transition-colors duration-200 shrink-0" />
+                                <p className="text-sm text-gray-700">
+                                    CredCrypt never shares or reveals your data.
+                                </p>
+                            </div>
+
+                            <div className="flex gap-3 items-start group hover:bg-white/50 p-2 rounded-lg transition-all duration-200">
+                                <div className="mt-1 h-2 w-2 rounded-full bg-green-500 group-hover:bg-green-600 transition-colors duration-200 shrink-0" />
+                                <p className="text-sm text-gray-700">
+                                    Your data is not used to train LLMs.
+                                </p>
+                            </div>
+
+                            <div className="flex gap-3 items-start group hover:bg-white/50 p-2 rounded-lg transition-all duration-200">
+                                <div className="mt-1 h-2 w-2 rounded-full bg-green-500 group-hover:bg-green-600 transition-colors duration-200 shrink-0" />
+                                <p className="text-sm text-gray-700">
+                                    CredCrypt is 100% safe and easy to manage.
+                                </p>
+                            </div>
+
+                            <div className="flex gap-3 items-start group hover:bg-white/50 p-2 rounded-lg transition-all duration-200">
+                                <div className="mt-1 h-2 w-2 rounded-full bg-green-500 group-hover:bg-green-600 transition-colors duration-200 shrink-0" />
+                                <p className="text-sm text-gray-700">
+                                    Need help? Contact our support team—we're here to help.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className='mt-6 p-4 bg-green-100/50 rounded-xl border border-green-200'>
+                            <div className='flex items-start gap-3'>
+                                <AlertCircle className='w-5 h-5 text-green-600 shrink-0 mt-0.5' />
+                                <div>
+                                    <p className='text-sm font-medium text-green-800'>Pro Tip</p>
+                                    <p className='text-xs text-green-700'>Use a strong, unique value for each credential to maximize security.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             {openVerifySaveModal && (
                 <OpenVerifySaveModal

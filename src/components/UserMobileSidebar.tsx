@@ -1,8 +1,10 @@
 "use client"
-import { Files, Home, LayoutDashboard, LogOut, PlusCircle, Settings, X } from 'lucide-react'
+import { Home, LayoutDashboard, LogOut, PlusCircle, Settings, Shield, X, Key, User } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
+import { useUserStore } from '@/stores/user.store'
+import Image from 'next/image'
 
 type propType = {
     setCurrentMenu: React.Dispatch<React.SetStateAction<string>>;
@@ -10,58 +12,87 @@ type propType = {
 }
 
 const UserMobileSidebar = ({ setCurrentMenu, setOpenMobileSidebar }: propType) => {
+    const user = useUserStore((state) => state.user)
     const router = useRouter()
 
-
+    const menuItems = [
+        { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, color: "text-blue-400" },
+        { id: "add-credential", label: "Add Credential", icon: PlusCircle, color: "text-green-400" },
+        { id: "all-credentials", label: "All Credentials", icon: Shield, color: "text-purple-400" },
+        { id: "settings", label: "Settings", icon: Settings, color: "text-orange-400" },
+    ];
 
     return (
         <>
-            <div className="fixed inset-0 bg-black/40 z-40 lg:hidden" onClick={() => setOpenMobileSidebar(false)} />
-            <aside className="fixed top-0 left-0 z-50 h-screen w-[70%] md:w-[30%] bg-green-700 border-r-2 border-green-800  flex flex-col transform transition-transform duration-300 ease-in-out lg:hidden">
-                <div className="flex items-center justify-between gap-4 mx-2 lg:mx-4 py-2 text-white font-semibold">
-                    <div className="flex items-center justify-center gap-1 cursor-pointer transition-opacity duration-600" onClick={() => router.push("/")}>
-                        <Home className='w-5 h-5' />
-                        <p className="text-md lg:text-xl transition-opacity duration-300">
-                            Home
+            <div
+                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden animate-in fade-in duration-200"
+                onClick={() => setOpenMobileSidebar(false)}
+            />
+            <aside className="fixed top-0 left-0 z-50 h-screen w-[75%] sm:w-[60%] md:w-[40%] bg-linear-to-b from-green-800 to-green-900 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out lg:hidden animate-in slide-in-from-left">
+                <div className="flex items-center justify-between px-5 py-4 border-b border-green-700/50">
+                    <div className="flex items-center gap-2 cursor-pointer" onClick={() => router.push("/")}>
+                        <div className="bg-white/10 p-2 relative w-10 h-10 rounded-xl">
+                            <Image
+                                src="/logo.png"
+                                alt='CredCrypt'
+                                fill
+                                className='object-cover' />
+                        </div>
+                        <p className="text-lg font-bold bg-linear-to-r from-green-200 to-white bg-clip-text text-transparent">
+                            CredCrypt
                         </p>
                     </div>
-                    <X className='w-5 h-5 cursor-pointer' onClick={() => setOpenMobileSidebar(false)} />
+                    <button
+                        onClick={() => setOpenMobileSidebar(false)}
+                        className="p-2 rounded-xl hover:bg-white/10 transition-all duration-200"
+                    >
+                        <X className='w-5 h-5 text-white/70 hover:text-white' />
+                    </button>
                 </div>
-                <hr className="text-green-800 bg-green-800 h-0.5" />
-                <div className="my-3 font-semibold overflow-hidden">
-                    <div className="flex items-center justify-start gap-1 hover:bg-green-200  hover:text-green-800 cursor-pointer text-white  transition-opacity duration-600 px-2 lg:px-4 py-3" onClick={() => setCurrentMenu("dashboard")}>
-                        <LayoutDashboard className='w-6 h-6' />
-                        <p className="text-md lg:text-lg transition-opacity duration-300">
-                            Dashboard
-                        </p>
-                    </div>
-                    <div className="flex items-center justify-start gap-1 hover:bg-green-200  hover:text-green-800 cursor-pointer text-white  transition-opacity duration-600 px-2 lg:px-4 py-3" onClick={() => setCurrentMenu("add-credential")}>
-                        <PlusCircle className='w-6 h-6' />
-                        <p className="text-md lg:text-lg transition-opacity duration-300">
-                            Add Credential
-                        </p>
-                    </div>
-                    <div className="flex items-center justify-start gap-1 hover:bg-green-200  hover:text-green-800 cursor-pointer text-white  transition-opacity duration-600 px-2 lg:px-4 py-3" onClick={() => setCurrentMenu("all-credentials")}>
-                        <Files className='w-6 h-6' />
-                        <p className="text-md lg:text-lg transition-opacity duration-300">
-                            All Credentials
-                        </p>
-                    </div>
-                    <div className="flex items-center justify-start gap-1 hover:bg-green-200  hover:text-green-800 cursor-pointer text-white  transition-opacity duration-600 px-2 lg:px-4 py-3" onClick={() => setCurrentMenu("settings")}>
-                        <Settings className='w-6 h-6' />
-                        <p className="text-md lg:text-lg transition-opacity duration-300">
-                            Settings
-                        </p>
-                    </div>
+
+                <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1.5">
+                    {menuItems.map((item) => (
+                        <div
+                            key={item.id}
+                            className="flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all duration-200 hover:bg-white/10 text-white/70 hover:text-white"
+                            onClick={() => {
+                                setCurrentMenu(item.id)
+                                setOpenMobileSidebar(false)
+                            }}
+                        >
+                            <item.icon className={`w-5 h-5 ${item.color} shrink-0`} />
+                            <p className="text-sm font-medium">
+                                {item.label}
+                            </p>
+                        </div>
+                    ))}
                 </div>
-                <div className='mt-auto px-4 py-2'>
+
+                <div className="px-4 py-4 border-t border-green-700/50">
+                    <div onClick={() => setCurrentMenu("settings")} className="flex cursor-pointer items-center gap-3 rounded-xl p-3 bg-green-800/30 mb-3">
+                        <div className="w-10 h-10 relative rounded-full bg-linear-to-br from-green-400 to-green-600 flex items-center justify-center shrink-0">
+                            {user?.avatar ? (
+                                <Image
+                                    src={user.avatar}
+                                    alt="User avatar"
+                                    fill
+                                    className="rounded-full object-cover"
+                                />
+                            ) : (
+                                <User className="w-5 h-5 text-white" />
+                            )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-white/80 truncate">{user?.name || "User"}</p>
+                            <p className="text-xs text-white/50">Secure Vault</p>
+                        </div>
+                    </div>
                     <button
                         onClick={() => signOut()}
-                        className="w-full flex items-center justify-center  gap-1 mx-auto py-2 my-2 text-red-600 font-semibold bg-red-100 hover:bg-red-200 rounded-full cursor-pointer">
-                        <p className="text-md lg:text-xl transition-opacity duration-300">
-                            Logout
-                        </p>
+                        className="w-full flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 font-medium rounded-xl transition-all duration-200 px-4 py-3"
+                    >
                         <LogOut className='w-5 h-5' />
+                        <span>Logout</span>
                     </button>
                 </div>
             </aside>

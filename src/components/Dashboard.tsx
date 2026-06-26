@@ -16,6 +16,7 @@ import {
     HelpCircle,
     BadgeCheck,
     Fingerprint,
+    LayoutDashboard,
 } from "lucide-react";
 import { useUserStore } from "@/stores/user.store";
 import { useCredentialStore } from "@/stores/credentials.store";
@@ -43,15 +44,18 @@ const Dashboard = ({ setOpenMobileSidebar, setCurrentMenu }: propType) => {
 
     return (
         <div className="w-full overflow-x-hidden">
-            <h1 className="text-xl md:text-2xl lg:text-3xl text-white font-semibold bg-green-900 py-4 px-8 rounded-xl shadow-md flex items-center justify-between">
-                Dashboard
-
-                <MenuSquare
-                    size={30}
-                    className="lg:hidden cursor-pointer"
-                    onClick={() => setOpenMobileSidebar((prev) => !prev)}
-                />
-            </h1>
+            <div className='bg-linear-to-r from-green-800 to-green-600 w-full py-4 px-6 md:px-8 shadow-lg rounded-xl my-2 flex items-center justify-between gap-4'>
+                <h1 className='text-xl md:text-2xl lg:text-3xl text-white font-bold flex items-center gap-3'>
+                    <LayoutDashboard className='w-6 h-6 md:w-7 md:h-7' />
+                    Dashboard
+                </h1>
+                <button
+                    onClick={() => setOpenMobileSidebar(prev => !prev)}
+                    className='lg:hidden text-white hover:bg-green-700 p-2 rounded-lg transition-all duration-200'
+                >
+                    <MenuSquare size={28} />
+                </button>
+            </div>
 
             <div className="flex flex-col items-center justify-center mt-12">
 
@@ -60,7 +64,7 @@ const Dashboard = ({ setOpenMobileSidebar, setCurrentMenu }: propType) => {
                     <Heart fill="red" strokeWidth={0} size={34} />
                 </p>
 
-                <h2 className="mt-3 text-4xl md:text-5xl font-bold text-green-900">
+                <h2 className="mt-3 text-4xl md:text-5xl text-center font-bold text-green-900">
                     {user?.name}
                 </h2>
 
@@ -182,30 +186,30 @@ const Dashboard = ({ setOpenMobileSidebar, setCurrentMenu }: propType) => {
                 <div className="grid md:grid-cols-2 gap-6">
 
                     <ActionCard
-                        onClick={() => setCurrentMenu("all-credentials")}
+                        onClick={() => { setCurrentMenu("all-credentials"); scrollTo(0, 0) }}
                         title="View Credentials"
                         subtitle="Browse every saved credential."
                         icon={<Eye size={30} />}
                     />
 
                     <ActionCard
-                        onClick={() => setCurrentMenu("add-credential")}
+                        onClick={() => { setCurrentMenu("add-credential"); scrollTo(0, 0) }}
                         title="Add Credential"
                         subtitle="Save a new credential."
                         icon={<PlusCircle size={30} />}
                     />
 
                     <ActionCard
-                        onClick={() => setCurrentMenu("settings")}
+                        onClick={() => { setCurrentMenu("settings"); scrollTo(0, 0) }}
                         title="Manage Settings"
-                        subtitle="Security & preferences."
+                        subtitle="Security & User settings."
                         icon={<Settings size={30} />}
                     />
 
                     <ActionCard
                         onClick={() => router.push("/contact-support")}
                         title="Contact Support"
-                        subtitle="Documentation & support."
+                        subtitle="Having issue? Contact support."
                         icon={<LifeBuoy size={30} />}
                     />
 

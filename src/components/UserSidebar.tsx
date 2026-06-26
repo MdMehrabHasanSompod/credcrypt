@@ -1,6 +1,8 @@
 "use client"
-import { Files, Home, LayoutDashboard, LogOut, PanelLeft, PlusCircle, Settings } from 'lucide-react'
+import { useUserStore } from '@/stores/user.store'
+import { LayoutDashboard, LogOut, PanelLeft, PlusCircle, Settings, Shield, Key, User } from 'lucide-react'
 import { signOut } from 'next-auth/react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
@@ -9,66 +11,94 @@ type propType = {
 }
 
 const UserSidebar = ({ setCurrentMenu }: propType) => {
+    const user = useUserStore((state) => state.user)
     const [toggleSidebar, setToggleSidebar] = useState<boolean>(false)
     const [showText, setShowText] = useState<boolean>(true)
     const router = useRouter()
 
     useEffect(() => {
         if (toggleSidebar) {
-
             setTimeout(() => setShowText(false), 200);
         } else {
             setTimeout(() => setShowText(true), 200);
         }
     }, [toggleSidebar]);
 
+    const menuItems = [
+        { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, color: "text-blue-400" },
+        { id: "add-credential", label: "Add Credential", icon: PlusCircle, color: "text-green-400" },
+        { id: "all-credentials", label: "All Credentials", icon: Shield, color: "text-purple-400" },
+        { id: "settings", label: "Settings", icon: Settings, color: "text-orange-400" },
+    ];
 
     return (
-        <aside className={`h-screen sticky top-0 overflow-y-auto  bg-green-700 border-r-3 border-green-800 py-2 hidden lg:flex flex-col transition-all duration-300 ease-in ${toggleSidebar ? "w-18" : "w-60"}`}>
-            <div className={`flex ${toggleSidebar && 'flex-col'} items-center justify-between gap-4 mx-2 lg:mx-4 py-2 text-white font-semibold`}>
-                <div className={`flex items-center justify-center gap-1 cursor-pointer transition-opacity duration-600`} onClick={() => router.push("/")}>
-                    <Home className='w-5 h-5' />
-                    <p className={`text-md lg:text-xl transition-opacity duration-300 ${toggleSidebar ? "opacity-0" : "opacity-100"} ${showText ? "block" : "hidden"}`}>
-                        Home
+        <aside className={`h-screen sticky top-0 overflow-y-auto bg-linear-to-b from-green-800 to-green-900 border-r-2 border-green-700/50 py-3 hidden lg:flex flex-col transition-all duration-300 ease-in-out shadow-2xl ${toggleSidebar ? "w-20" : "w-64"}`}>
+            <div className={`flex ${toggleSidebar ? 'flex-col gap-3' : 'items-center justify-between'} px-4 py-2 text-white font-semibold border-b border-green-700/50 pb-4`}>
+                <div className={`flex items-center gap-2 cursor-pointer transition-all duration-300 group ${toggleSidebar ? 'justify-center' : ''}`} onClick={() => router.push("/")}>
+                    <div className="bg-white/10 p-2 relative w-10 h-10 rounded-xl group-hover:bg-white/20 transition-all duration-300">
+
+                        <Image
+                            src="/logo.png"
+                            alt='CredCrypt'
+                            fill
+                            className='object-cover' />
+
+                    </div>
+                    <p className={`text-lg font-bold bg-linear-to-r from-green-200 to-white bg-clip-text text-transparent transition-all duration-300 overflow-hidden whitespace-nowrap ${toggleSidebar ? "opacity-0 w-0" : "opacity-100 w-auto"}`}>
+                        CredCrypt
                     </p>
                 </div>
-                <PanelLeft className='w-5 h-5 cursor-pointer' onClick={() => setToggleSidebar(!toggleSidebar)} />
+                <button
+                    onClick={() => setToggleSidebar(!toggleSidebar)}
+                    className={`p-2 rounded-xl hover:bg-white/10 transition-all duration-300 ${toggleSidebar ? 'mx-auto' : ''}`}
+                >
+                    <PanelLeft className={`w-5 h-5 text-white/70 hover:text-white transition-transform duration-300 ${toggleSidebar ? 'rotate-180' : ''}`} />
+                </button>
             </div>
-            <hr className="text-green-800 bg-green-800 h-0.5" />
-            <div className={`my-3 ${toggleSidebar && "mx-auto"} font-semibold overflow-y-auto`}>
-                <div className={`flex items-center justify-start gap-1 hover:bg-green-200  hover:text-green-800 cursor-pointer text-white transition-opacity duration-600 px-2 lg:px-4 py-3`} onClick={() => setCurrentMenu("dashboard")}>
-                    <LayoutDashboard className='w-6 h-6' />
-                    <p className={`text-md lg:text-lg transition-opacity duration-300 ${toggleSidebar ? "opacity-0" : "opacity-100"} ${showText ? "block" : "hidden"}`}>
-                        Dashboard
-                    </p>
-                </div>
-                <div className={`flex items-center justify-start gap-1 hover:bg-green-200  hover:text-green-800 cursor-pointer text-white transition-opacity duration-600 px-2 lg:px-4 py-3`} onClick={() => setCurrentMenu("add-credential")}>
-                    <PlusCircle className='w-6 h-6' />
-                    <p className={`text-md lg:text-lg transition-opacity duration-300 ${toggleSidebar ? "opacity-0" : "opacity-100"} ${showText ? "block" : "hidden"}`}>
-                        Add Credential
-                    </p>
-                </div>
-                <div className={`flex items-center justify-start gap-1 hover:bg-green-200  hover:text-green-800 cursor-pointer text-white transition-opacity duration-600 px-2 lg:px-4 py-3`} onClick={() => setCurrentMenu("all-credentials")}>
-                    <Files className='w-6 h-6' />
-                    <p className={`text-md lg:text-lg transition-opacity duration-300 ${toggleSidebar ? "opacity-0" : "opacity-100"} ${showText ? "block" : "hidden"}`}>
-                        All Credentials
-                    </p>
-                </div>
-                <div className={`flex items-center justify-start gap-1 hover:bg-green-200  hover:text-green-800 cursor-pointer text-white transition-opacity duration-600 px-2 lg:px-4 py-3`} onClick={() => setCurrentMenu("settings")}>
-                    <Settings className='w-6 h-6' />
-                    <p className={`text-md lg:text-lg transition-opacity duration-300 ${toggleSidebar ? "opacity-0" : "opacity-100"} ${showText ? "block" : "hidden"}`}>
-                        Settings
-                    </p>
-                </div>
+
+            <div className={`my-4 flex-1 ${toggleSidebar ? "px-2" : "px-3"} space-y-1.5 overflow-y-auto`}>
+                {menuItems.map((item) => (
+                    <div
+                        key={item.id}
+                        className={`flex items-center gap-3 rounded-xl cursor-pointer transition-all duration-200 group ${toggleSidebar ? 'justify-center p-3' : 'px-4 py-3'} 
+                            hover:bg-white/10 hover:text-white text-white/70`}
+                        onClick={() => setCurrentMenu(item.id)}
+                    >
+                        <item.icon className={`w-5 h-5 ${item.color} transition-transform duration-200 group-hover:scale-110 shrink-0`} />
+                        <p className={`text-sm font-medium transition-all duration-300 overflow-hidden whitespace-nowrap ${toggleSidebar ? "opacity-0 w-0" : "opacity-100 w-auto"}`}>
+                            {item.label}
+                        </p>
+                    </div>
+                ))}
             </div>
-            <div className='mt-auto px-4 py-2'>
+
+            <div className={`mt-auto ${toggleSidebar ? "px-2" : "px-4"} py-3 border-t border-green-700/50`}>
+                <div onClick={() => setCurrentMenu("settings")} className={`flex cursor-pointer items-center gap-3 rounded-xl p-3 bg-green-800/30 mb-3 transition-all duration-300 ${toggleSidebar ? 'justify-center' : ''}`}>
+                    <div className="w-8 h-8 relative rounded-full bg-linear-to-br from-green-400 to-green-600 flex items-center justify-center shrink-0">
+                        {user?.avatar ? (
+                            <Image
+                                src={user.avatar}
+                                alt="User avatar"
+                                fill
+                                className="rounded-full object-cover"
+                            />
+                        ) : (
+                            <User className="w-4 h-4 text-white" />
+                        )}
+                    </div>
+                    <div className={`transition-all duration-300 overflow-hidden whitespace-nowrap ${toggleSidebar ? "opacity-0 w-0" : "opacity-100 w-auto"}`}>
+                        <p className="text-xs font-medium text-white/80 truncate">{user?.name}</p>
+                        <p className="text-[10px] text-white/50">Secure Vault</p>
+                    </div>
+                </div>
                 <button
                     onClick={() => signOut()}
-                    className={`w-full flex items-center justify-center  gap-1 mx-auto my-2 text-red-600 font-semibold bg-red-100 hover:bg-red-200  ${toggleSidebar ? "p-2" : "px-2 py-1"} rounded-full cursor-pointer`}>
-                    <p className={`text-md lg:text-xl transition-opacity duration-300 ${toggleSidebar ? "opacity-0" : "opacity-100"} ${showText ? "block" : "hidden"}`}>
+                    className={`w-full cursor-pointer flex items-center gap-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 font-medium rounded-xl transition-all duration-200 ${toggleSidebar ? "justify-center p-3" : "px-4 py-2.5"}`}
+                >
+                    <LogOut className='w-5 h-5 shrink-0' />
+                    <p className={`text-sm transition-all duration-300 overflow-hidden whitespace-nowrap ${toggleSidebar ? "opacity-0 w-0" : "opacity-100 w-auto"}`}>
                         Logout
                     </p>
-                    <LogOut className='w-5 h-5' />
                 </button>
             </div>
         </aside>
