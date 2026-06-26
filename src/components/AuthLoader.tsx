@@ -18,9 +18,7 @@ export default function AuthLoader() {
         if (session.status === "authenticated" && session.data.user) {
             const loadUser = async () => {
                 try {
-                    const fetchedUser = await getUser({
-                        id: session.data.user.id,
-                    });
+                    const fetchedUser = await getUser();
                     clearRole();
                     setUser(fetchedUser);
 

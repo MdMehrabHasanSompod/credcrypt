@@ -1,21 +1,22 @@
+import { auth } from "@/lib/auth";
 import connectDB from "@/lib/db";
 import { User } from "@/models/user.model";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 
 
-export const GET = async (request: NextRequest) => {
+export const GET = async () => {
     try {
-        const { searchParams } = new URL(request.url);
-        const id = searchParams.get("id");
-        if (!id) {
+        const session = await auth()
+
+        if (!session?.user.id) {
             return NextResponse.json(
                 { success: false, message: "Attempted to Unauthorized Access" },
                 { status: 401 }
             )
         }
         await connectDB()
-        const existedUser = await User.findOne({ _id: id }).select("name email phone avatar createdAt").lean();
+        const existedUser = await User.findOne({ _id: session.user.id }).select("name email phone avatar createdAt").lean();
         return NextResponse.json(
             { success: true, message: "User Fetched Successfully", existedUser },
             { status: 200 }
