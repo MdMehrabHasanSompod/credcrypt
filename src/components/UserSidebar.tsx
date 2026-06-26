@@ -1,5 +1,5 @@
 "use client"
-import { DashboardMenu, useDashboardStore } from '@/stores/dashboardMenu.store'
+import { DashboardMenu, useDashboardStore, useToggleSidebarStore } from '@/stores/dashboardMenu.store'
 import { useUserStore } from '@/stores/user.store'
 import { LayoutDashboard, LogOut, PanelLeft, PlusCircle, Settings, Shield, Key, User, LucideIcon } from 'lucide-react'
 import { signOut } from 'next-auth/react'
@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react'
 const UserSidebar = () => {
     const user = useUserStore((state) => state.user)
     const { setCurrentMenu } = useDashboardStore()
-    const [toggleSidebar, setToggleSidebar] = useState<boolean>(false)
+    const { toggleSidebar, setToggleSidebar } = useToggleSidebarStore()
     const [showText, setShowText] = useState<boolean>(true)
     const router = useRouter()
 
@@ -54,7 +54,7 @@ const UserSidebar = () => {
                     </p>
                 </div>
                 <button
-                    onClick={() => setToggleSidebar(!toggleSidebar)}
+                    onClick={setToggleSidebar}
                     className={`p-2 rounded-xl hover:bg-white/10 transition-all duration-300 ${toggleSidebar ? 'mx-auto' : ''}`}
                 >
                     <PanelLeft className={`w-5 h-5 text-white/70 hover:text-white transition-transform duration-300 ${toggleSidebar ? 'rotate-180' : ''}`} />

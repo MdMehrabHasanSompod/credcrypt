@@ -12,6 +12,11 @@ interface DashboardStore {
     setCurrentMenu: (menu: DashboardMenu) => void;
 }
 
+interface ToggleSidebarStore {
+    toggleSidebar: boolean;
+    setToggleSidebar: () => void;
+}
+
 export const useDashboardStore = create<DashboardStore>()(
     persist(
         (set) => ({
@@ -20,6 +25,18 @@ export const useDashboardStore = create<DashboardStore>()(
         }),
         {
             name: "dashboard-menu",
+        }
+    )
+);
+
+export const useToggleSidebarStore = create<ToggleSidebarStore>()(
+    persist(
+        (set) => ({
+            toggleSidebar: false,
+            setToggleSidebar: () => set((state) => ({ toggleSidebar: !state.toggleSidebar })),
+        }),
+        {
+            name: "toggle-state",
         }
     )
 );
