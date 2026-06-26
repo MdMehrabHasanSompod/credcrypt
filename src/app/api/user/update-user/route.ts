@@ -3,6 +3,7 @@ import uploadOnCloudinary from "@/lib/cloudinary"
 import connectDB from "@/lib/db"
 import { User } from "@/models/user.model"
 import { NextRequest, NextResponse } from "next/server"
+import { v2 as cloudinary } from "cloudinary"
 
 export const PATCH = async (request: NextRequest) => {
     try {
@@ -46,8 +47,26 @@ export const PATCH = async (request: NextRequest) => {
 
         await connectDB()
 
+        const sessionUser = await User.findById(sessionUserId);
+
+        if (!sessionUser) {
+            return NextResponse.json(
+                { success: false, message: "User not found" },
+                { status: 404 }
+            );
+        }
+
+        if (removeAvatar && sessionUser.avatar) {
+            const publicId = sessionUser.avatar.match(/\/upload\/(?:[^/]+\/)*v\d+\/(.+)\.[^.]+$/)?.[1];
+            await cloudinary.uploader.destroy(publicId)
+        }
+
         if (updatedAvatar) {
             const updatedAvatarUrl = await uploadOnCloudinary(updatedAvatar);
+            if (sessionUser.avatar) {
+                const oldPublicId = sessionUser.avatar.match(/\/upload\/(?:[^/]+\/)*v\d+\/(.+)\.[^.]+$/)?.[1];
+                await cloudinary.uploader.destroy(oldPublicId)
+            }
             updateData.avatar = updatedAvatarUrl;
         }
 

@@ -6,6 +6,7 @@ import { User } from "@/models/user.model";
 import { hashMasterKey } from "@/lib/crypto";
 import bcrypt from "bcrypt"
 import mongoose from "mongoose";
+import { v2 as cloudinary } from "cloudinary"
 
 export const DELETE = async (request: NextRequest) => {
     try {
@@ -58,6 +59,9 @@ export const DELETE = async (request: NextRequest) => {
             mongodbSession.startTransaction();
 
             await Credential.deleteMany({ userId: sessionUserId }, { session: mongodbSession })
+
+            const publicId = sessionUser.avatar.match(/\/upload\/(?:[^/]+\/)*v\d+\/(.+)\.[^.]+$/)?.[1];
+            await cloudinary.uploader.destroy(publicId)
 
             const deletedUser = await User.findOneAndDelete({ _id: sessionUserId }, { session: mongodbSession })
 
