@@ -4,6 +4,7 @@ import "./styles/globals.css";
 import SessionWrapper from "@/components/SessionWrapper";
 import AuthLoader from "@/components/AuthLoader";
 import CredentialsLoader from "@/components/CredentialsLoader";
+import ToastProvider from "@/components/providers/ToastProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +39,7 @@ export default function RootLayout({
           <AuthLoader />
           <CredentialsLoader />
           {children}
+          <ToastProvider />
         </SessionWrapper>
       </body>
     </html>

@@ -1,11 +1,13 @@
 "use client";
 import { assets } from '@/assets/assets'
+import axios from 'axios';
 import { ArrowLeft, Eye, EyeOff, Loader2, Mail, Key, Shield, } from "lucide-react";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { toast } from 'react-toastify';
 
 
 const Login = () => {
@@ -26,12 +28,21 @@ const Login = () => {
             })
 
             if (result?.ok) {
+                toast.success("Logged in successfully")
                 router.push("/api/auth/post-login");
                 setEmail("");
                 setPassword("");
             }
         } catch (error) {
-            console.log(error)
+            if (axios.isAxiosError(error)) {
+                toast.error(
+                    error.response?.data?.message || "Something went wrong"
+                );
+            } else if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Something went wrong");
+            }
         } finally {
             setLoading(false)
         }

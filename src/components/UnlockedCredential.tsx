@@ -1,6 +1,7 @@
 import { IDecryptedCredential } from '@/types/credential.type'
 import React from 'react'
 import { X, Copy, CheckCircle, Shield, Lock, Unlock, User, Mail, Key, Calendar, Clock, AlertTriangle } from 'lucide-react'
+import { toast } from 'react-toastify';
 
 type propsTypes = {
     selectedCredential: IDecryptedCredential;
@@ -19,6 +20,7 @@ const UnlockedCredential = ({
     const handleCopy = async () => {
         await copyToClipboard(data.value);
         setCopied(true);
+        toast.success("Value copied")
         setTimeout(() => setCopied(false), 2000);
     };
 

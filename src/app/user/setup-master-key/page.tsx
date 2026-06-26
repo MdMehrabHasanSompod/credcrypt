@@ -3,6 +3,7 @@ import axios from "axios";
 import { Loader2, Copy, CheckCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const setMasterKey = () => {
     const [key, setKey] = useState("");
@@ -17,9 +18,20 @@ const setMasterKey = () => {
                 setLoading(true);
 
                 const result = await axios.get("/api/user/get-master-key");
-                setKey(result.data.masterKey);
+                if (result.data.success) {
+                    toast.success("Master Key received successfully")
+                    setKey(result.data.masterKey);
+                }
             } catch (error) {
-                console.log(error);
+                if (axios.isAxiosError(error)) {
+                    toast.error(
+                        error.response?.data?.message || "Something went wrong"
+                    );
+                } else if (error instanceof Error) {
+                    toast.error(error.message);
+                } else {
+                    toast.error("Something went wrong");
+                }
             } finally {
                 setLoading(false);
             }
@@ -32,6 +44,7 @@ const setMasterKey = () => {
         if (!key) return;
 
         await navigator.clipboard.writeText(key);
+        toast.success("Master key copied")
         setCopied(true);
 
         setTimeout(() => setCopied(false), 2000);
@@ -43,11 +56,16 @@ const setMasterKey = () => {
 
             const result = await axios.patch("/api/user/confirm-master-key");
             if (result.status === 200) {
+                toast.success("Confirmed saving master key ")
                 router.push("/user/dashboard");
             }
 
         } catch (error) {
-            console.log(error);
+            if (error instanceof Error) {
+                toast.error(error.message)
+            } else {
+                toast.error("Something went wrong")
+            }
         } finally {
             setConfirming(false);
         }

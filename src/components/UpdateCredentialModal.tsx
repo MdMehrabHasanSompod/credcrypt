@@ -2,6 +2,7 @@ import { useCredentialStore } from "@/stores/credentials.store";
 import axios from "axios";
 import React, { useState } from "react";
 import { Edit, X, Save, Loader2, Shield, Mail, User, Key, Type, CheckSquare, Square } from "lucide-react";
+import { toast } from "react-toastify";
 
 type propsTypes = {
     credId: string;
@@ -82,12 +83,21 @@ const UpdateCredentialModal = ({
             );
 
             if (result.status === 200) {
+                toast.success("Credential updated successfully")
                 const updatedCredentials = credentials.map((cred) => cred._id === credId ? result.data.data : cred)
                 setCredentials(updatedCredentials)
                 setUpdateCredentialModal(false);
             }
         } catch (error) {
-            console.log(error);
+            if (axios.isAxiosError(error)) {
+                toast.error(
+                    error.response?.data?.message || "Something went wrong"
+                );
+            } else if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Something went wrong");
+            }
         } finally {
             setLoading(false);
         }

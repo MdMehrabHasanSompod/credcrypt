@@ -2,6 +2,7 @@ import { useCredentialStore } from "@/stores/credentials.store";
 import axios from "axios";
 import React, { useState } from "react";
 import { Trash2, AlertTriangle, ArrowLeft, X, Shield, Lock, CheckCircle, Loader2 } from "lucide-react";
+import { toast } from "react-toastify";
 
 type propsTypes = {
     credId: string;
@@ -33,13 +34,22 @@ const DeleteCredentialModal = ({
             })
 
             if (result.status === 200) {
+                toast.success("Credential deleted successfully")
                 const updatedCredentials = credentials.filter((cred) => cred._id !== credId)
                 setCredentials(updatedCredentials)
                 setDeleteCredentialModal(false);
             }
 
         } catch (error) {
-            console.log(error);
+            if (axios.isAxiosError(error)) {
+                toast.error(
+                    error.response?.data?.message || "Something went wrong"
+                );
+            } else if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Something went wrong");
+            }
         } finally {
             setLoading(false);
         }

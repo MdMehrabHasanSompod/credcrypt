@@ -56,14 +56,14 @@ export const PATCH = async (request: NextRequest) => {
             );
         }
 
-        if (removeAvatar && sessionUser.avatar) {
+        if (removeAvatar && sessionUser.avatar && sessionUser.avatar.includes("res.cloudinary.com")) {
             const publicId = sessionUser.avatar.match(/\/upload\/(?:[^/]+\/)*v\d+\/(.+)\.[^.]+$/)?.[1];
             await cloudinary.uploader.destroy(publicId)
         }
 
         if (updatedAvatar) {
             const updatedAvatarUrl = await uploadOnCloudinary(updatedAvatar);
-            if (sessionUser.avatar) {
+            if (sessionUser.avatar && sessionUser.avatar.includes("res.cloudinary.com")) {
                 const oldPublicId = sessionUser.avatar.match(/\/upload\/(?:[^/]+\/)*v\d+\/(.+)\.[^.]+$/)?.[1];
                 await cloudinary.uploader.destroy(oldPublicId)
             }

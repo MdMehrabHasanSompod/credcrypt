@@ -15,6 +15,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 const ResetPassword = () => {
     const router = useRouter();
@@ -42,10 +43,19 @@ const ResetPassword = () => {
             });
 
             if (result.status === 200) {
+                toast.success("Password changed successfully")
                 router.push("/user/dashboard");
             }
         } catch (error) {
-            console.log(error);
+            if (axios.isAxiosError(error)) {
+                toast.error(
+                    error.response?.data?.message || "Something went wrong"
+                );
+            } else if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Something went wrong");
+            }
         } finally {
             setLoading(false);
         }

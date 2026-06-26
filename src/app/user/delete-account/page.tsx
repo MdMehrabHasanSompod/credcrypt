@@ -4,6 +4,7 @@ import { Loader2, ArrowLeft, Trash2, AlertTriangle, Shield, Key, Lock, Eye, EyeO
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const DeleteAccount = () => {
     const router = useRouter();
@@ -24,11 +25,20 @@ const DeleteAccount = () => {
             );
 
             if (result.status === 200) {
+                toast.success("Account deleted successfully")
                 await signOut({ redirect: false });
                 router.push("/");
             }
         } catch (error) {
-            console.log(error);
+            if (axios.isAxiosError(error)) {
+                toast.error(
+                    error.response?.data?.message || "Something went wrong"
+                );
+            } else if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Something went wrong");
+            }
         } finally {
             setLoading(false);
         }

@@ -4,6 +4,7 @@ import { CredentialType } from './AddCredential';
 import axios from 'axios';
 import { useCredentialStore } from '@/stores/credentials.store';
 import { X, Shield, Key, Lock, Loader2, ArrowLeft, Eye, EyeOff, Save } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 type propsTypes = {
     setOpenVerifySaveModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -36,6 +37,7 @@ const OpenVerifySaveModal = ({ setOpenVerifySaveModal, name, email, type, value,
             })
 
             if (result.status === 201) {
+                toast.success("Credential saved successfully")
                 setCredentials([...credentials, result.data.data])
                 setMasterKey("")
                 setName("")
@@ -46,7 +48,15 @@ const OpenVerifySaveModal = ({ setOpenVerifySaveModal, name, email, type, value,
             }
 
         } catch (error) {
-            console.error(error)
+            if (axios.isAxiosError(error)) {
+                toast.error(
+                    error.response?.data?.message || "Something went wrong"
+                );
+            } else if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Something went wrong");
+            }
         } finally {
             setVerifying(false)
         }

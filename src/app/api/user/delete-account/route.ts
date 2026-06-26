@@ -60,8 +60,10 @@ export const DELETE = async (request: NextRequest) => {
 
             await Credential.deleteMany({ userId: sessionUserId }, { session: mongodbSession })
 
-            const publicId = sessionUser.avatar.match(/\/upload\/(?:[^/]+\/)*v\d+\/(.+)\.[^.]+$/)?.[1];
-            await cloudinary.uploader.destroy(publicId)
+            if (sessionUser.avatar && sessionUser.avatar.includes("res.cloudinary.com")) {
+                const publicId = sessionUser.avatar.match(/\/upload\/(?:[^/]+\/)*v\d+\/(.+)\.[^.]+$/)?.[1];
+                await cloudinary.uploader.destroy(publicId)
+            }
 
             const deletedUser = await User.findOneAndDelete({ _id: sessionUserId }, { session: mongodbSession })
 

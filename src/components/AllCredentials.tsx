@@ -19,6 +19,7 @@ import OpenUpdateMasterModal from "./OpenUpdateMasterModal";
 import UpdateCredentialModal from "./UpdateCredentialModal";
 import OpenDeleteMasterModal from "./OpenDeleteMasterModal";
 import DeleteCredentialModal from "./DeleteCredentialModal";
+import { toast } from "react-toastify";
 
 type propType = { setOpenMobileSidebar: React.Dispatch<React.SetStateAction<boolean>> };
 
@@ -88,13 +89,22 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
                 }
             );
             if (result.status === 200) {
+                toast.success("Credential decrypted successfully")
                 setSelectedCredential(result.data.data);
                 setOpenViewMasterModal(false);
                 setMasterKey("");
                 setOpenUnlockedCredModal(true);
             }
         } catch (error) {
-            console.log(error);
+            if (axios.isAxiosError(error)) {
+                toast.error(
+                    error.response?.data?.message || "Something went wrong"
+                );
+            } else if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Something went wrong");
+            }
         } finally {
             setVerifying(false);
         }
@@ -111,11 +121,20 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
             setVerifying(true);
             const result = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/verify-update-request`, { masterKey });
             if (result.status === 200) {
+                toast.success("Master key verified successfully")
                 setOpenUpdateMasterModal(false)
                 setUpdateCredentialModal(true)
             }
         } catch (error) {
-            console.log(error)
+            if (axios.isAxiosError(error)) {
+                toast.error(
+                    error.response?.data?.message || "Something went wrong"
+                );
+            } else if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Something went wrong");
+            }
         } finally {
             setVerifying(false)
         }
@@ -126,11 +145,20 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
             setVerifying(true);
             const result = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/verify-update-request`, { masterKey });
             if (result.status === 200) {
+                toast.success("Master key verified successfully")
                 setOpenDeleteMasterModal(false)
                 setDeleteCredentialModal(true)
             }
         } catch (error) {
-            console.log(error)
+            if (axios.isAxiosError(error)) {
+                toast.error(
+                    error.response?.data?.message || "Something went wrong"
+                );
+            } else if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Something went wrong");
+            }
         } finally {
             setVerifying(false)
         }

@@ -7,6 +7,7 @@ import { signOut } from 'next-auth/react';
 import Image from 'next/image'
 import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, useState } from 'react'
+import { toast } from 'react-toastify';
 
 type propType = {
     setOpenMobileSidebar: React.Dispatch<React.SetStateAction<boolean>>
@@ -60,6 +61,7 @@ const UserSettings = ({ setOpenMobileSidebar }: propType) => {
             const result = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/update-user`, formData)
 
             if (result.data.success) {
+                toast.success("User updated successfully")
                 setUser(result.data.updatedUser)
                 setUpdatedName(result.data.updatedUser.name || "");
                 setUpdatedPhone(result.data.updatedUser.phone || "");
@@ -71,7 +73,15 @@ const UserSettings = ({ setOpenMobileSidebar }: propType) => {
 
 
         } catch (error) {
-            console.log(error);
+            if (axios.isAxiosError(error)) {
+                toast.error(
+                    error.response?.data?.message || "Something went wrong"
+                );
+            } else if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Something went wrong");
+            }
         } finally {
             setUpdateLoading(false)
         }

@@ -12,6 +12,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 const SetUpPassword = () => {
     const [password, setPassword] = useState("");
@@ -32,13 +33,22 @@ const SetUpPassword = () => {
 
             if (result.status === 200) {
                 if (!result.data.updatedUser.hasSetUpMasterKey) {
+                    toast.success("Password added successfully")
                     router.push("/user/setup-master-key")
                 } else {
                     router.push("user/dashboard")
                 }
             }
         } catch (error) {
-            console.log(error);
+            if (axios.isAxiosError(error)) {
+                toast.error(
+                    error.response?.data?.message || "Something went wrong"
+                );
+            } else if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Something went wrong");
+            }
         } finally {
             setLoading(false);
         }

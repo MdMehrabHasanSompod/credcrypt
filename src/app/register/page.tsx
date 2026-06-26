@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 const Register = () => {
     const [name, setName] = useState("");
@@ -29,6 +30,7 @@ const Register = () => {
                 password,
             });
             if (result.status === 201) {
+                toast.success("User Registered Successfully")
                 router.push("/login")
                 setName("");
                 setEmail("");
@@ -36,11 +38,17 @@ const Register = () => {
                 setPhone("");
             }
         } catch (error) {
-            console.log(error);
-        } finally {
-            {
-                setLoading(false)
+            if (axios.isAxiosError(error)) {
+                toast.error(
+                    error.response?.data?.message || "Something went wrong"
+                );
+            } else if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Something went wrong");
             }
+        } finally {
+            setLoading(false)
         }
     };
 
