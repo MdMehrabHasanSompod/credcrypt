@@ -9,13 +9,6 @@ export const GET = async () => {
     try {
         const session = await auth()
 
-
-        console.log("SESSION:", JSON.stringify(session, null, 2));
-
-        if (!session) {
-            console.log("Session is null");
-        }
-
         if (session?.user) {
             console.log("User:", session.user);
             console.log("User ID:", session.user.id);
@@ -23,8 +16,8 @@ export const GET = async () => {
 
         if (!session?.user.id) {
             return NextResponse.json(
-                { success: false, message: "Attempted to Unauthorized Access" },
-                { status: 401 }
+                { success: false, message: "Problem to Unauthorized Access" },
+                { status: 404 }
             )
         }
         await connectDB()
