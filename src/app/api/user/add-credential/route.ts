@@ -17,6 +17,21 @@ export const POST = async (request: NextRequest) => {
             )
         }
 
+
+        if (name.length < 2) {
+            return NextResponse.json(
+                { success: false, message: "Name must contain 2 characters" },
+                { status: 400 }
+            )
+        }
+
+        if (name.length > 100) {
+            return NextResponse.json(
+                { success: false, message: "Name cannot exceed 100 characters" },
+                { status: 400 }
+            )
+        }
+
         const session = await auth();
 
         if (!session?.user?.id || !masterKey) {

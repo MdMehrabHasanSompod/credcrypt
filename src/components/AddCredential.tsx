@@ -72,6 +72,8 @@ const AddCredential = ({ setOpenMobileSidebar }: propType) => {
                                     onChange={(e) => setName(e.target.value)}
                                     className='w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700'
                                     required
+                                    minLength={2}
+                                    maxLength={100}
                                 />
                             </div>
 

@@ -15,6 +15,20 @@ export const POST = async (request: NextRequest) => {
                 { status: 400 }
             )
         }
+        if (name.length < 2) {
+            return NextResponse.json(
+                { success: false, message: "Name must contain 2 characters" },
+                { status: 400 }
+            )
+        }
+
+        if (name.length > 40) {
+            return NextResponse.json(
+                { success: false, message: "Name cannot exceed 40 characters" },
+                { status: 400 }
+            )
+        }
+
         if (password.length < 8) {
             return NextResponse.json(
                 { success: false, message: "Password must be 8 characters" },

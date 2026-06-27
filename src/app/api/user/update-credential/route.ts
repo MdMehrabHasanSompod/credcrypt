@@ -17,6 +17,20 @@ export const PATCH = async (request: NextRequest) => {
             )
         }
 
+        if (updatedName.length < 2) {
+            return NextResponse.json(
+                { success: false, message: "Name must contain 2 characters" },
+                { status: 400 }
+            )
+        }
+
+        if (updatedName.length > 100) {
+            return NextResponse.json(
+                { success: false, message: "Name cannot exceed 100 characters" },
+                { status: 400 }
+            )
+        }
+
         if (!credentialId?.trim()) {
             return NextResponse.json(
                 { success: false, message: "Invalid request" },

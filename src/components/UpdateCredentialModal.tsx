@@ -104,29 +104,29 @@ const UpdateCredentialModal = ({
     };
 
     return (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 px-4">
-            <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 px-2 sm:px-4 p-2 sm:p-4">
+            <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden max-h-[98vh] sm:max-h-[95vh] flex flex-col animate-in fade-in zoom-in duration-200">
 
-                <div className="bg-linear-to-r from-green-700 to-green-600 px-6 py-4 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <div className="bg-white/20 p-2 rounded-xl">
-                            <Edit className="w-5 h-5 text-white" />
+                <div className="bg-linear-to-r from-green-700 to-green-600 px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between shrink-0 gap-2">
+                    <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                        <div className="bg-white/20 p-1.5 sm:p-2 rounded-xl shrink-0">
+                            <Edit className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                         </div>
-                        <h2 className="text-xl font-bold text-white">
+                        <h2 className="text-sm sm:text-xl font-bold text-white truncate flex-1">
                             Update Credential
                         </h2>
                     </div>
                     <button
                         onClick={() => setUpdateCredentialModal(false)}
-                        className="text-white/80 hover:text-white hover:bg-white/20 p-2 rounded-lg transition-all duration-200"
+                        className="text-white/80 hover:text-white hover:bg-white/20 p-1.5 sm:p-2 rounded-lg transition-all duration-200 shrink-0"
                     >
-                        <X className="w-5 h-5" />
+                        <X className="w-4 h-4 sm:w-5 sm:h-5" />
                     </button>
                 </div>
 
-                <div className="p-6">
-                    <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-xl border border-blue-200 mb-6">
-                        <Shield className="w-6 h-6 text-blue-600 shrink-0" />
+                <div className="p-4 sm:p-6 overflow-y-auto flex-1">
+                    <div className="flex items-start sm:items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-blue-50 rounded-xl border border-blue-200 mb-4 sm:mb-6">
+                        <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 shrink-0 mt-0.5 sm:mt-0" />
                         <div>
                             <p className="text-sm font-medium text-blue-800">
                                 Select Fields to Update
@@ -137,60 +137,60 @@ const UpdateCredentialModal = ({
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 mb-6">
+                    <div className="grid grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-6">
                         <button
                             onClick={() => toggleField("name")}
-                            className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 transition-all duration-200 font-medium ${fields.name
+                            className={`flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-2.5 sm:py-3 rounded-xl border-2 transition-all duration-200 font-medium text-xs sm:text-sm ${fields.name
                                 ? "border-green-600 bg-green-600 text-white shadow-lg shadow-green-200"
                                 : "border-gray-200 bg-white text-gray-700 hover:border-green-300 hover:bg-green-50"
                                 }`}
                         >
-                            {fields.name ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
-                            <User className="w-4 h-4" />
-                            Name
+                            {fields.name ? <CheckSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" /> : <Square className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />}
+                            <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                            <span className="truncate">Name</span>
                         </button>
 
                         <button
                             onClick={() => toggleField("email")}
-                            className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 transition-all duration-200 font-medium ${fields.email
+                            className={`flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-2.5 sm:py-3 rounded-xl border-2 transition-all duration-200 font-medium text-xs sm:text-sm ${fields.email
                                 ? "border-green-600 bg-green-600 text-white shadow-lg shadow-green-200"
                                 : "border-gray-200 bg-white text-gray-700 hover:border-green-300 hover:bg-green-50"
                                 }`}
                         >
-                            {fields.email ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
-                            <Mail className="w-4 h-4" />
-                            Email
+                            {fields.email ? <CheckSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" /> : <Square className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />}
+                            <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                            <span className="truncate">Email</span>
                         </button>
 
                         <button
                             onClick={() => toggleField("value")}
-                            className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 transition-all duration-200 font-medium ${fields.value
+                            className={`flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-2.5 sm:py-3 rounded-xl border-2 transition-all duration-200 font-medium text-xs sm:text-sm ${fields.value
                                 ? "border-green-600 bg-green-600 text-white shadow-lg shadow-green-200"
                                 : "border-gray-200 bg-white text-gray-700 hover:border-green-300 hover:bg-green-50"
                                 }`}
                         >
-                            {fields.value ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
-                            <Key className="w-4 h-4" />
-                            Value
+                            {fields.value ? <CheckSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" /> : <Square className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />}
+                            <Key className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                            <span className="truncate">Value</span>
                         </button>
 
                         <button
                             onClick={() => toggleField("type")}
-                            className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 transition-all duration-200 font-medium ${fields.type
+                            className={`flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-2.5 sm:py-3 rounded-xl border-2 transition-all duration-200 font-medium text-xs sm:text-sm ${fields.type
                                 ? "border-green-600 bg-green-600 text-white shadow-lg shadow-green-200"
                                 : "border-gray-200 bg-white text-gray-700 hover:border-green-300 hover:bg-green-50"
                                 }`}
                         >
-                            {fields.type ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
-                            <Type className="w-4 h-4" />
-                            Type
+                            {fields.type ? <CheckSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" /> : <Square className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />}
+                            <Type className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                            <span className="truncate">Type</span>
                         </button>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
                         {fields.name && (
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                                     New Name
                                 </label>
                                 <input
@@ -198,15 +198,17 @@ const UpdateCredentialModal = ({
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     placeholder="Enter new credential name"
-                                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700"
+                                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700 text-sm sm:text-base"
                                     required
+                                    minLength={2}
+                                    maxLength={100}
                                 />
                             </div>
                         )}
 
                         {fields.email && (
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                                     New Email
                                 </label>
                                 <input
@@ -214,7 +216,7 @@ const UpdateCredentialModal = ({
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="Enter new email address"
-                                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700"
+                                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700 text-sm sm:text-base"
                                     required
                                 />
                             </div>
@@ -222,13 +224,13 @@ const UpdateCredentialModal = ({
 
                         {fields.type && (
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                                     New Type
                                 </label>
                                 <select
                                     value={type}
                                     onChange={(e) => setType(e.target.value as CredentialType)}
-                                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700 bg-white appearance-none cursor-pointer"
+                                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700 bg-white appearance-none cursor-pointer text-sm sm:text-base"
                                     required
                                 >
                                     <option value="">Select New Credential Type</option>
@@ -247,24 +249,24 @@ const UpdateCredentialModal = ({
 
                         {fields.value && (
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                                     New Value
                                 </label>
                                 <textarea
                                     value={value}
                                     onChange={(e) => setValue(e.target.value)}
                                     placeholder="Enter new credential value"
-                                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700 min-h-25 resize-y"
+                                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700 min-h-20 sm:min-h-25 resize-y text-sm sm:text-base"
                                     required
                                 />
                             </div>
                         )}
 
-                        <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-4 border-t border-gray-100">
+                        <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 pt-3 sm:pt-4 border-t border-gray-100">
                             <button
                                 type="button"
                                 onClick={() => setUpdateCredentialModal(false)}
-                                className="w-full cursor-pointer sm:w-auto px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-all duration-200"
+                                className="w-full sm:w-auto px-4 sm:px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-all duration-200 text-sm sm:text-base"
                             >
                                 Cancel
                             </button>
@@ -272,7 +274,7 @@ const UpdateCredentialModal = ({
                             <button
                                 type="submit"
                                 disabled={loading || !Object.values(fields).some(v => v === true)}
-                                className="w-full cursor-pointer sm:w-auto px-6 py-2.5 bg-linear-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-medium rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                className="w-full sm:w-auto px-4 sm:px-6 py-2.5 bg-linear-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-medium rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base"
                             >
                                 {loading ? (
                                     <>
