@@ -29,16 +29,14 @@ const UserSidebar = () => {
 
     return (
         <aside className={`h-screen sticky top-0 overflow-y-auto bg-linear-to-b from-green-800 to-green-900 border-r-2 border-green-700/50 py-3 hidden lg:flex flex-col transition-all duration-300 ease-in-out shadow-2xl ${toggleSidebar ? "w-20" : "w-64"}`}>
-            <div className={`flex ${toggleSidebar ? 'flex-col gap-3' : 'items-center justify-between'} px-4 py-2 text-white font-semibold border-b border-green-700/50 pb-4`}>
+            <div className={`flex ${toggleSidebar ? 'flex-col gap-3' : 'items-center justify-between'} px-4 py-2 text-white font-semibold border-b border-green-700/50 pb-4 shrink-0`}>
                 <div className={`flex items-center gap-2 cursor-pointer transition-all duration-300 group ${toggleSidebar ? 'justify-center' : ''}`} onClick={() => router.push("/")}>
                     <div className="bg-white/10 p-2 relative w-10 h-10 rounded-xl group-hover:bg-white/20 transition-all duration-300">
-
                         <Image
                             src="/logo.png"
                             alt='CredCrypt'
                             fill
                             className='object-cover' />
-
                     </div>
                     <p className={`text-lg font-bold bg-linear-to-r from-green-200 to-white bg-clip-text text-transparent transition-all duration-300 overflow-hidden whitespace-nowrap ${toggleSidebar ? "opacity-0 w-0" : "opacity-100 w-auto"}`}>
                         CredCrypt
@@ -68,7 +66,7 @@ const UserSidebar = () => {
                 ))}
             </div>
 
-            <div className={`mt-auto ${toggleSidebar ? "px-2" : "px-4"} py-3 border-t border-green-700/50`}>
+            <div className={`mt-auto ${toggleSidebar ? "px-2" : "px-4"} py-3 border-t border-green-700/50 shrink-0`}>
                 <div onClick={() => setCurrentMenu("settings")} className={`flex cursor-pointer items-center gap-3 rounded-xl p-3 bg-green-800/30 mb-3 transition-all duration-300 ${toggleSidebar ? 'justify-center' : ''}`}>
                     <div className="w-8 h-8 relative rounded-full bg-linear-to-br from-green-400 to-green-600 flex items-center justify-center shrink-0">
                         {user?.avatar ? (
