@@ -1,5 +1,5 @@
 "use client"
-import { Home, LayoutDashboard, LogOut, PlusCircle, Settings, Shield, X, Key, User, LucideIcon } from 'lucide-react'
+import { LayoutDashboard, LogOut, PlusCircle, Settings, Shield, X, User, LucideIcon } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -38,7 +38,7 @@ const UserMobileSidebar = ({ setOpenMobileSidebar }: propType) => {
                 onClick={() => setOpenMobileSidebar(false)}
             />
             <aside className="fixed top-0 left-0 z-50 h-screen w-[75%] sm:w-[60%] md:w-[40%] bg-linear-to-b from-green-800 to-green-900 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out lg:hidden animate-in slide-in-from-left">
-                <div className="flex items-center justify-between px-5 py-4 border-b border-green-700/50">
+                <div className="flex items-center justify-between px-5 py-4 border-b border-green-700/50 shrink-0">
                     <div className="flex items-center gap-2 cursor-pointer" onClick={() => router.push("/")}>
                         <div className="bg-white/10 p-2 relative w-10 h-10 rounded-xl">
                             <Image
@@ -59,26 +59,31 @@ const UserMobileSidebar = ({ setOpenMobileSidebar }: propType) => {
                     </button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1.5">
-                    {menuItems.map((item) => (
-                        <div
-                            key={item.id}
-                            className="flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all duration-200 hover:bg-white/10 text-white/70 hover:text-white"
-                            onClick={() => {
-                                setCurrentMenu(item.id)
-                                setOpenMobileSidebar(false)
-                            }}
-                        >
-                            <item.icon className={`w-5 h-5 ${item.color} shrink-0`} />
-                            <p className="text-sm font-medium">
-                                {item.label}
-                            </p>
-                        </div>
-                    ))}
+                <div className="flex-1 overflow-y-auto px-3 py-4">
+                    <div className="space-y-1.5">
+                        {menuItems.map((item) => (
+                            <div
+                                key={item.id}
+                                className="flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all duration-200 hover:bg-white/10 text-white/70 hover:text-white"
+                                onClick={() => {
+                                    setCurrentMenu(item.id)
+                                    setOpenMobileSidebar(false)
+                                }}
+                            >
+                                <item.icon className={`w-5 h-5 ${item.color} shrink-0`} />
+                                <p className="text-sm font-medium">
+                                    {item.label}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
 
-                <div className="px-4 py-4 border-t border-green-700/50">
-                    <div onClick={() => setCurrentMenu("settings")} className="flex cursor-pointer items-center gap-3 rounded-xl p-3 bg-green-800/30 mb-3">
+                <div className="px-4 py-4 border-t border-green-700/50 shrink-0">
+                    <div onClick={() => {
+                        setCurrentMenu("settings")
+                        setOpenMobileSidebar(false)
+                    }} className="flex cursor-pointer items-center gap-3 rounded-xl p-3 bg-green-800/30 mb-3">
                         <div className="w-10 h-10 relative rounded-full bg-linear-to-br from-green-400 to-green-600 flex items-center justify-center shrink-0">
                             {user?.avatar ? (
                                 <Image

@@ -61,7 +61,7 @@ const Navbar = () => {
                         onClick={() => setMobileMenuOpen(false)}
                     />
                     <div className="fixed top-0 right-0 z-50 h-screen w-[75%] sm:w-[60%] bg-linear-to-b from-green-800 to-green-900 shadow-2xl flex flex-col md:hidden animate-in slide-in-from-right duration-300">
-                        <div className="flex items-center justify-between px-5 py-4 border-b border-green-700/50">
+                        <div className="flex items-center justify-between px-5 py-4 border-b border-green-700/50 shrink-0">
                             <div className="flex items-center gap-2">
                                 <Image src='/logo.png' width={40} height={40} alt='CredCrypt' className='w-10 h-10' />
                                 <span className="text-lg font-bold bg-linear-to-r from-green-200 to-white bg-clip-text text-transparent">CredCrypt</span>
@@ -74,78 +74,80 @@ const Navbar = () => {
                             </button>
                         </div>
 
-                        <div className="flex-1 px-5 py-6 space-y-3 overflow-y-auto">
-                            {!user ? (
-                                <>
-                                    <Link
-                                        href="/privacy-policy"
-                                        className="block text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl transition-all duration-200 text-base font-medium"
-                                        onClick={() => setMobileMenuOpen(false)}
-                                    >
-                                        Privacy
-                                    </Link>
-                                    <Link
-                                        href="/contact-support"
-                                        className="block text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl transition-all duration-200 text-base font-medium"
-                                        onClick={() => setMobileMenuOpen(false)}
-                                    >
-                                        Helpline
-                                    </Link>
-                                    <div className="pt-4 border-t border-green-700/50">
-                                        <Link
-                                            href="/login"
-                                            className="block bg-green-600 hover:bg-green-700 text-center text-white font-semibold px-5 py-3 rounded-xl transition-all duration-200"
-                                            onClick={() => setMobileMenuOpen(false)}
-                                        >
-                                            Login
-                                        </Link>
-                                    </div>
-                                </>
-                            ) : (
-                                <>
-                                    <div onClick={() => {
-                                        router.push("/user/dashboard")
-                                        setMobileMenuOpen(false)
-                                    }} className="flex cursor-pointer items-center gap-3 bg-green-800/30 rounded-xl p-3 mb-2 hover:bg-green-800/50 transition-all duration-200">
-                                        <AvatarDropdown user={user} />
-                                        <div className="flex-1 min-w-0">
-                                            <p className="text-base font-medium text-white/90 truncate">{user.name}</p>
-                                            <p className="text-xs text-white/50 truncate">{user.email}</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="space-y-1">
+                        <div className="flex-1 px-5 py-6 overflow-y-auto">
+                            <div className="space-y-3">
+                                {!user ? (
+                                    <>
                                         <Link
                                             href="/privacy-policy"
-                                            className="flex items-center gap-3 text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl transition-all duration-200 text-base font-medium"
+                                            className="block text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl transition-all duration-200 text-base font-medium"
                                             onClick={() => setMobileMenuOpen(false)}
                                         >
-                                            <ClipboardPen className='w-5 h-5 text-blue-400' />
-                                            Privacy-Policy
-                                        </Link>
-                                        <Link
-                                            href="/user/dashboard"
-                                            className="flex items-center gap-3 text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl transition-all duration-200 text-base font-medium"
-                                            onClick={() => setMobileMenuOpen(false)}
-                                        >
-                                            <LayoutDashboard className="w-5 h-5 text-green-400" />
-                                            Dashboard
+                                            Privacy
                                         </Link>
                                         <Link
                                             href="/contact-support"
-                                            className="flex items-center gap-3 text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl transition-all duration-200 text-base font-medium"
+                                            className="block text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl transition-all duration-200 text-base font-medium"
                                             onClick={() => setMobileMenuOpen(false)}
                                         >
-                                            <Phone className="w-5 h-5 text-blue-400" />
                                             Helpline
                                         </Link>
-                                    </div>
-                                </>
-                            )}
+                                        <div className="pt-4 border-t border-green-700/50">
+                                            <Link
+                                                href="/login"
+                                                className="block bg-green-600 hover:bg-green-700 text-center text-white font-semibold px-5 py-3 rounded-xl transition-all duration-200"
+                                                onClick={() => setMobileMenuOpen(false)}
+                                            >
+                                                Login
+                                            </Link>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div onClick={() => {
+                                            router.push("/user/dashboard")
+                                            setMobileMenuOpen(false)
+                                        }} className="flex cursor-pointer items-center gap-3 bg-green-800/30 rounded-xl p-3 mb-2 hover:bg-green-800/50 transition-all duration-200">
+                                            <AvatarDropdown user={user} />
+                                            <div className="flex-1 min-w-0">
+                                                <p className="text-base font-medium text-white/90 truncate">{user.name}</p>
+                                                <p className="text-xs text-white/50 truncate">{user.email}</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-1">
+                                            <Link
+                                                href="/privacy-policy"
+                                                className="flex items-center gap-3 text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl transition-all duration-200 text-base font-medium"
+                                                onClick={() => setMobileMenuOpen(false)}
+                                            >
+                                                <ClipboardPen className='w-5 h-5 text-blue-400' />
+                                                Privacy-Policy
+                                            </Link>
+                                            <Link
+                                                href="/user/dashboard"
+                                                className="flex items-center gap-3 text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl transition-all duration-200 text-base font-medium"
+                                                onClick={() => setMobileMenuOpen(false)}
+                                            >
+                                                <LayoutDashboard className="w-5 h-5 text-green-400" />
+                                                Dashboard
+                                            </Link>
+                                            <Link
+                                                href="/contact-support"
+                                                className="flex items-center gap-3 text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl transition-all duration-200 text-base font-medium"
+                                                onClick={() => setMobileMenuOpen(false)}
+                                            >
+                                                <Phone className="w-5 h-5 text-blue-400" />
+                                                Helpline
+                                            </Link>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
                         </div>
 
                         {user && (
-                            <div className="px-5 py-4 border-t border-green-700/50">
+                            <div className="px-5 py-4 border-t border-green-700/50 shrink-0">
                                 <button
                                     onClick={() => {
                                         signOut()
