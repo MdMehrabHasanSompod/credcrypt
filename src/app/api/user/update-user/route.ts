@@ -79,7 +79,9 @@ export const PATCH = async (request: NextRequest) => {
             const updatedAvatarUrl = await uploadOnCloudinary(updatedAvatar);
             if (sessionUser.avatar && sessionUser.avatar.includes("res.cloudinary.com")) {
                 const oldPublicId = sessionUser.avatar.match(/\/upload\/(?:[^/]+\/)*v\d+\/(.+)\.[^.]+$/)?.[1];
-                await cloudinary.uploader.destroy(oldPublicId)
+                if (oldPublicId) {
+                    await cloudinary.uploader.destroy(oldPublicId)
+                }
             }
             updateData.avatar = updatedAvatarUrl;
         }
@@ -102,6 +104,7 @@ export const PATCH = async (request: NextRequest) => {
         )
 
     } catch (error) {
+        console.log(error)
         return NextResponse.json(
             { success: false, message: "Internal Server Error" },
             { status: 500 }
