@@ -20,14 +20,14 @@ export const PATCH = async (request: NextRequest) => {
             )
         }
 
-        if (updatedName.trim() && updatedName.length < 2) {
+        if (updatedName && updatedName.length < 2) {
             return NextResponse.json(
                 { success: false, message: "Name must contain 2 characters" },
                 { status: 400 }
             )
         }
 
-        if (updatedName.trim() && updatedName.length > 40) {
+        if (updatedName && updatedName.length > 40) {
             return NextResponse.json(
                 { success: false, message: "Name cannot exceed 40 characters" },
                 { status: 400 }
