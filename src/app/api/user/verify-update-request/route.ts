@@ -10,9 +10,9 @@ export const POST = async (request: NextRequest) => {
         const { masterKey } = await request.json()
 
 
-        if (!session?.user?.id || !masterKey) {
+        if (!session?.user?.id || !masterKey?.trim()) {
             return NextResponse.json(
-                { success: false, message: "Unauthorized attempt" },
+                { success: false, message: "Attempted to unauthorized access" },
                 { status: 401 }
             );
         }
@@ -34,7 +34,7 @@ export const POST = async (request: NextRequest) => {
 
         if (sessionUser.masterKeyHash !== masterKeyHash) {
             return NextResponse.json(
-                { success: false, message: "Attempted to unauthorized access" },
+                { success: false, message: "Invalid Master Key" },
                 { status: 401 }
             );
         }

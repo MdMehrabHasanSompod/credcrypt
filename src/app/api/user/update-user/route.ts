@@ -13,21 +13,21 @@ export const PATCH = async (request: NextRequest) => {
         const updatedAvatar = formData.get("updatedAvatar") as Blob
         const removeAvatar = formData.get("removeAvatar") === "true";
 
-        if (!updatedName && !updatedPhone && !updatedAvatar && !removeAvatar) {
+        if (!updatedName?.trim() && !updatedPhone?.trim() && !updatedAvatar && !removeAvatar) {
             return NextResponse.json(
-                { success: false, message: "Invalid Update Request" },
+                { success: false, message: "Update fields not provided" },
                 { status: 400 }
             )
         }
 
-        if (updatedName && updatedName.length < 2) {
+        if (updatedName?.trim() && updatedName?.trim().length < 2) {
             return NextResponse.json(
-                { success: false, message: "Name must contain 2 characters" },
+                { success: false, message: "Name must contain at least 2 characters" },
                 { status: 400 }
             )
         }
 
-        if (updatedName && updatedName.length > 40) {
+        if (updatedName?.trim() && updatedName?.trim().length > 40) {
             return NextResponse.json(
                 { success: false, message: "Name cannot exceed 40 characters" },
                 { status: 400 }
@@ -52,7 +52,7 @@ export const PATCH = async (request: NextRequest) => {
 
         if (!session?.user.id) {
             return NextResponse.json(
-                { success: false, message: "Attempted unauthorize access" },
+                { success: false, message: "Attempted to unauthorized access" },
                 { status: 401 }
             )
         }

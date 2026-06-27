@@ -8,16 +8,16 @@ export const PATCH = async (request: NextRequest) => {
     try {
         const { password, newPassword } = await request.json()
 
-        if (!password || !newPassword) {
+        if (!password?.trim() || !newPassword?.trim()) {
             return NextResponse.json(
                 { success: false, message: "Invalid request" },
                 { status: 400 }
             )
         }
 
-        if (newPassword.length < 8) {
+        if (newPassword?.trim().length < 8) {
             return NextResponse.json(
-                { success: false, message: "Password must be 8 characters" },
+                { success: false, message: "Password must be at least 8 characters" },
                 { status: 400 }
             )
         }
@@ -26,7 +26,7 @@ export const PATCH = async (request: NextRequest) => {
 
         if (!session?.user?.id) {
             return NextResponse.json(
-                { success: false, message: "Unauthorized attempt" },
+                { success: false, message: "Attempted to unauthorized access" },
                 { status: 401 }
             );
         }
@@ -56,7 +56,7 @@ export const PATCH = async (request: NextRequest) => {
 
         if (!isPasswordMatched) {
             return NextResponse.json(
-                { success: false, message: "Unauthorized attempt" },
+                { success: false, message: "Attempted to unauthorized access" },
                 { status: 401 }
             );
         }

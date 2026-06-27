@@ -26,7 +26,7 @@ export const DELETE = async (request: NextRequest) => {
 
         const session = await auth();
 
-        if (!session?.user?.id || !masterKey) {
+        if (!session?.user?.id || !masterKey?.trim()) {
             return NextResponse.json(
                 { success: false, message: "Unauthorized attempt" },
                 { status: 401 }

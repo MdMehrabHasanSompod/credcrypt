@@ -14,9 +14,9 @@ export const DELETE = async (request: NextRequest) => {
 
         const session = await auth();
 
-        if (!session?.user?.id || !masterKey || !password) {
+        if (!session?.user?.id || !masterKey?.trim() || !password?.trim()) {
             return NextResponse.json(
-                { success: false, message: "Unauthorized attempt" },
+                { success: false, message: "Attempted to unauthorized access" },
                 { status: 401 }
             );
         }
@@ -39,7 +39,7 @@ export const DELETE = async (request: NextRequest) => {
 
         if (sessionUser.masterKeyHash !== masterKeyHash) {
             return NextResponse.json(
-                { success: false, message: "Attempted to unauthorized access" },
+                { success: false, message: "Invalid Master Key" },
                 { status: 401 }
             );
         }

@@ -18,6 +18,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             , async authorize(credentials) {
                 const email = credentials?.email as string;
                 const password = credentials?.password as string;
+                if (!email?.trim() || !password?.trim()) {
+                    throw new Error("Invalid Login Request")
+                }
                 await connectDB()
                 const user = await User.findOne({ email }).select("+password")
                 if (!user) {

@@ -10,7 +10,7 @@ export const POST = async (request: NextRequest) => {
         const { masterKey, name, email, type, value } = await request.json()
 
 
-        if (!name || !type || !value) {
+        if (!name?.trim() || !type?.trim() || !value?.trim()) {
             return NextResponse.json(
                 { success: false, message: "Missing required fields" },
                 { status: 400 }
@@ -18,14 +18,14 @@ export const POST = async (request: NextRequest) => {
         }
 
 
-        if (name.length < 2) {
+        if (name?.trim().length < 2) {
             return NextResponse.json(
-                { success: false, message: "Name must contain 2 characters" },
+                { success: false, message: "Name must contain at least 2 characters" },
                 { status: 400 }
             )
         }
 
-        if (name.length > 100) {
+        if (name?.trim().length > 100) {
             return NextResponse.json(
                 { success: false, message: "Name cannot exceed 100 characters" },
                 { status: 400 }
@@ -34,7 +34,7 @@ export const POST = async (request: NextRequest) => {
 
         const session = await auth();
 
-        if (!session?.user?.id || !masterKey) {
+        if (!session?.user?.id || !masterKey?.trim()) {
             return NextResponse.json(
                 { success: false, message: "Attempted to unauthorized access" },
                 { status: 401 }
@@ -58,7 +58,7 @@ export const POST = async (request: NextRequest) => {
 
         if (sessionUser.masterKeyHash !== masterKeyHash) {
             return NextResponse.json(
-                { success: false, message: "Attempted to unauthorized access" },
+                { success: false, message: "Invalid Master Key" },
                 { status: 401 }
             );
         }

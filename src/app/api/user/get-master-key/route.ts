@@ -8,7 +8,7 @@ export const GET = async () => {
 
         if (!session?.user?.id) {
             return NextResponse.json(
-                { success: false, message: "Unauthorized attempt" },
+                { success: false, message: "Attempted to unauthorized access" },
                 { status: 401 }
             );
         }

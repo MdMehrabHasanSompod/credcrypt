@@ -11,8 +11,8 @@ export const GET = async () => {
 
         if (!session?.user.id) {
             return NextResponse.json(
-                { success: false, message: "Problem to Unauthorized Access" },
-                { status: 404 }
+                { success: false, message: "Attempted to unauthorized access" },
+                { status: 401 }
             )
         }
         await connectDB()

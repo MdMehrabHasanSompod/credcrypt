@@ -9,29 +9,29 @@ import { redis } from "@/lib/redis";
 export const POST = async (request: NextRequest) => {
     try {
         const { name, email, phone, password } = await request.json()
-        if (!name || !email || !phone || !password) {
+        if (!name?.trim() || !email?.trim() || !phone?.trim() || !password?.trim()) {
             return NextResponse.json(
                 { success: false, message: "All fields are required" },
                 { status: 400 }
             )
         }
-        if (name.length < 2) {
+        if (name?.trim().length < 2) {
             return NextResponse.json(
-                { success: false, message: "Name must contain 2 characters" },
+                { success: false, message: "Name must contain at least 2 characters" },
                 { status: 400 }
             )
         }
 
-        if (name.length > 40) {
+        if (name?.trim().length > 40) {
             return NextResponse.json(
                 { success: false, message: "Name cannot exceed 40 characters" },
                 { status: 400 }
             )
         }
 
-        if (password.length < 8) {
+        if (password?.trim().length < 8) {
             return NextResponse.json(
-                { success: false, message: "Password must be 8 characters" },
+                { success: false, message: "Password must be at least 8 characters" },
                 { status: 400 }
             )
         }

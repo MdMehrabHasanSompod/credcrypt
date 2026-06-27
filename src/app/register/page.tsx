@@ -39,7 +39,7 @@ const Register = () => {
                 password,
             });
             if (result.status === 201) {
-                toast.success("User Registered Successfully")
+                toast.success("User Registered Successfully. Please Login to Continue")
                 router.push("/login")
                 setName("");
                 setEmail("");
