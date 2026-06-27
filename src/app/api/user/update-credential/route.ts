@@ -17,14 +17,14 @@ export const PATCH = async (request: NextRequest) => {
             )
         }
 
-        if (updatedName.length < 2) {
+        if (updatedName.trim() && updatedName.length < 2) {
             return NextResponse.json(
                 { success: false, message: "Name must contain 2 characters" },
                 { status: 400 }
             )
         }
 
-        if (updatedName.length > 100) {
+        if (updatedName.trim() && updatedName.length > 100) {
             return NextResponse.json(
                 { success: false, message: "Name cannot exceed 100 characters" },
                 { status: 400 }
@@ -82,7 +82,7 @@ export const PATCH = async (request: NextRequest) => {
         const updatedCredential = await Credential.findOneAndUpdate({ _id: credentialId, userId: sessionUserId },
             {
                 $set: valuesToUpdate
-            }, { new: true, runValidators: true })
+            }, { returnDocument: "after", runValidators: true })
 
         if (!updatedCredential) {
             return NextResponse.json(

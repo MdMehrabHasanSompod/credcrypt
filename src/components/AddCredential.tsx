@@ -4,6 +4,7 @@ import { MenuSquare, PlusCircle, Lock, AlertCircle, Sparkles } from 'lucide-reac
 import { useSession } from 'next-auth/react';
 import OpenVerifySaveModal from './OpenVerifySaveModal';
 import { ICredType } from '@/types/credential.type';
+import { toast } from 'react-toastify';
 
 
 type propType = {
@@ -25,6 +26,16 @@ const AddCredential = ({ setOpenMobileSidebar }: propType) => {
         e.preventDefault()
         if (!type) {
             alert("Please select a credential type!")
+            return;
+        }
+
+        if (name.length < 2) {
+            toast.error("Name must be at least 2 characters.");
+            return;
+        }
+
+        if (name.length > 100) {
+            toast.error("Name cannot exceed 100 characters.");
             return;
         }
         if (!session?.data?.user.id) {

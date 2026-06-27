@@ -21,6 +21,15 @@ const Register = () => {
 
     const submitHandler = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (name.length < 2) {
+            toast.error("Name must be at least 2 characters.");
+            return;
+        }
+
+        if (name.length > 40) {
+            toast.error("Name cannot exceed 40 characters.");
+            return;
+        }
         try {
             setLoading(true);
             const result = await axios.post("/api/auth/register", {

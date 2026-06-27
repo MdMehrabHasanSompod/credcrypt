@@ -65,6 +65,16 @@ const UpdateCredentialModal = ({
             return;
         }
 
+        if (fields.name && name.length < 2) {
+            toast.error("Name must be at least 2 characters.");
+            return;
+        }
+
+        if (fields.name && name.length > 100) {
+            toast.error("Name cannot exceed 100 characters.");
+            return;
+        }
+
         setLoading(true);
 
         try {

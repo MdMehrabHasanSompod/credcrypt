@@ -149,7 +149,7 @@ const UserSettings = ({ setOpenMobileSidebar }: propType) => {
                                             className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700"
                                             value={updatedPhone}
                                             onChange={(e) => setUpdatedPhone(e.target.value)}
-                                            required
+
                                         />
                                     </div>
 

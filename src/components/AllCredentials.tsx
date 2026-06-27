@@ -284,7 +284,7 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
                             <div className="flex justify-between items-start gap-3">
                                 <div className="min-w-0 flex-1">
                                     <p className="text-xs text-gray-400 font-medium"># {index + 1}</p>
-                                    <h3 className="font-semibold text-green-900 text-lg mt-1 truncate">{cred.name}</h3>
+                                    <h3 className="font-semibold text-green-900 text-lg mt-1 truncate wrap-break-word">{cred.name}</h3>
                                     <p className="text-sm text-gray-500 truncate">{cred.email || "No email"}</p>
                                 </div>
                                 <span className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium ${typeStyles[cred.type]}`}>
@@ -352,7 +352,7 @@ const AllCredentials = ({ setOpenMobileSidebar }: propType) => {
                             <div className="flex justify-between items-start gap-2">
                                 <div className="min-w-0 flex-1">
                                     <p className="text-xs text-gray-400 font-medium"># {index + 1}</p>
-                                    <h3 className="font-semibold text-green-900 text-base mt-1">{cred.name}</h3>
+                                    <h3 className="font-semibold text-green-900 text-base mt-1 wrap-break-word">{cred.name}</h3>
                                     <p className="text-xs text-gray-500 truncate">{cred.email || "No email"}</p>
                                 </div>
                                 <span className={`shrink-0 px-2 py-1 rounded-full text-[10px] font-medium ${typeStyles[cred.type]}`}>

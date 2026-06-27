@@ -90,7 +90,7 @@ const UnlockedCredential = ({
                                     <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-600 shrink-0" />
                                     <p className="text-[10px] sm:text-xs text-gray-500 font-medium">Value</p>
                                 </div>
-                                <p className="font-mono font-semibold text-gray-900 text-xs sm:text-sm break-all bg-gray-50 p-1.5 sm:p-2 rounded-lg border border-gray-200">
+                                <p className="font-mono font-semibold text-gray-900 text-xs sm:text-sm break-all wrap-break-word bg-gray-50 p-1.5 sm:p-2 rounded-lg border border-gray-200">
                                     {data.value}
                                 </p>
                             </div>
