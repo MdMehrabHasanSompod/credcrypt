@@ -110,13 +110,13 @@ const DeleteCredentialModal = ({
                             <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3">
                                 <button
                                     onClick={() => setDeleteCredentialModal(false)}
-                                    className="w-full sm:w-auto px-4 sm:px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-all duration-200 text-sm sm:text-base"
+                                    className="w-full cursor-pointer sm:w-auto px-4 sm:px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-all duration-200 text-sm sm:text-base"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={() => setStep(2)}
-                                    className="w-full sm:w-auto px-4 sm:px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-medium rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-sm sm:text-base"
+                                    className="w-full cursor-pointer sm:w-auto px-4 sm:px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-medium rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-sm sm:text-base"
                                 >
                                     <Trash2 className="w-4 h-4" />
                                     Continue Deletion
@@ -157,7 +157,7 @@ const DeleteCredentialModal = ({
                             <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 mt-4 sm:mt-6">
                                 <button
                                     onClick={() => setStep(1)}
-                                    className="w-full sm:w-auto px-4 sm:px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-base"
+                                    className="w-full cursor-pointer sm:w-auto px-4 sm:px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-base"
                                 >
                                     <ArrowLeft className="w-4 h-4" />
                                     Go Back
@@ -165,7 +165,7 @@ const DeleteCredentialModal = ({
                                 <button
                                     onClick={handleDelete}
                                     disabled={confirmationText !== credentialName || loading}
-                                    className="w-full sm:w-auto px-4 sm:px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-medium rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl disabled:bg-red-400 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base"
+                                    className="w-full cursor-pointer sm:w-auto px-4 sm:px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-medium rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl disabled:bg-red-400 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base"
                                 >
                                     {loading ? (
                                         <>
